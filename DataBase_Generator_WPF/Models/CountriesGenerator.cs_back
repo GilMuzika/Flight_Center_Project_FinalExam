@@ -1,0 +1,47 @@
+﻿using Flight_Center_Project_FinalExam_DAL;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataBase_Generator_WPF
+{
+    static class CountriesGenerator
+    {
+        static string _jsonRawString = Statics.ReadFromUrl("https://restcountries.eu/rest/v2");
+        static List<JsonCountry> _listOfCountries;
+
+        static CountriesGenerator()
+        {
+            _listOfCountries = MakeListOfCountries(_jsonRawString);
+        }
+
+        static private List<JsonCountry> MakeListOfCountries(string jsonRawString)
+        {
+            List<JsonCountry> countries = new List<JsonCountry>();
+
+            var data = JArray.Parse(jsonRawString);
+            foreach (var s in data)
+            {
+                if (s is JObject)
+                {
+                    JsonCountry property1 = JsonConvert.DeserializeObject<JsonCountry>(s.ToString());
+
+                    countries.Add(property1);
+                }
+            }
+            return countries;
+        }
+
+        
+        static public List<JsonCountry> Countries_restcountries_eu
+        {
+            get => _listOfCountries;
+        }
+
+
+    }
+}

@@ -14,7 +14,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            REMAINING_TICKETS = 6
   }
 
-  public class Flight : IPoco
+  public class Flight : PocoBase, IPoco
    {
        public Int64 ID { get; set; }
        public Int64 AIRLINECOMPANY_ID { get; set; }

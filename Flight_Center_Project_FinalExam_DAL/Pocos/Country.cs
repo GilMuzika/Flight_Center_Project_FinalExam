@@ -3,25 +3,29 @@ using System;
 namespace Flight_Center_Project_FinalExam_DAL
 {
 
-  enum CountryPropertyNumber
+  public enum CountryPropertyNumber
   {
            ID = 0,
-           COUNTRY_NAME = 1
+           COUNTRY_NAME = 1,
+           COUNTRY_IDENTIFIER = 2
   }
 
-  public class Country : IPoco
+  public class Country : PocoBase, IPoco
    {
        public Int64 ID { get; set; }
        public String COUNTRY_NAME { get; set; }
+       public Int64 COUNTRY_IDENTIFIER { get; set; }
 
 
-       public Country( String cOUNTRY_NAME)
+       public Country( String cOUNTRY_NAME, Int64 cOUNTRY_IDENTIFIER)
        {
            COUNTRY_NAME = cOUNTRY_NAME;
+           COUNTRY_IDENTIFIER = cOUNTRY_IDENTIFIER;
        }
        public Country()
        {
            COUNTRY_NAME = "-=DEFAULT_STRING=-";
+           COUNTRY_IDENTIFIER = -9999;
        }
 
 

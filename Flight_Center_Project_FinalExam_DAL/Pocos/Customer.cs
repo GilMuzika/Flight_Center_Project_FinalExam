@@ -3,7 +3,7 @@ using System;
 namespace Flight_Center_Project_FinalExam_DAL
 {
 
-  enum CustomerPropertyNumber
+  public enum CustomerPropertyNumber
   {
            ID = 0,
            FIRST_NAME = 1,
@@ -11,10 +11,11 @@ namespace Flight_Center_Project_FinalExam_DAL
            ADDRESS = 3,
            PHONE_NO = 4,
            CREDIT_CARD_NUMBER = 5,
-           USER_ID = 6
+           IMAGE = 6,
+           USER_ID = 7
   }
 
-  public class Customer : IPoco, IUser
+  public class Customer : IDisposable, IPoco
    {
        public Int64 ID { get; set; }
        public String FIRST_NAME { get; set; }
@@ -22,16 +23,18 @@ namespace Flight_Center_Project_FinalExam_DAL
        public String ADDRESS { get; set; }
        public String PHONE_NO { get; set; }
        public String CREDIT_CARD_NUMBER { get; set; }
+       public String IMAGE { get; set; }
        public Int64 USER_ID { get; set; }
 
 
-       public Customer( String fIRST_NAME, String lAST_NAME, String aDDRESS, String pHONE_NO, String cREDIT_CARD_NUMBER, Int64 uSER_ID)
+       public Customer( String fIRST_NAME, String lAST_NAME, String aDDRESS, String pHONE_NO, String cREDIT_CARD_NUMBER, String iMAGE, Int64 uSER_ID)
        {
            FIRST_NAME = fIRST_NAME;
            LAST_NAME = lAST_NAME;
            ADDRESS = aDDRESS;
            PHONE_NO = pHONE_NO;
            CREDIT_CARD_NUMBER = cREDIT_CARD_NUMBER;
+           IMAGE = iMAGE;
            USER_ID = uSER_ID;
        }
        public Customer()
@@ -41,6 +44,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            ADDRESS = "-=DEFAULT_STRING=-";
            PHONE_NO = "-=DEFAULT_STRING=-";
            CREDIT_CARD_NUMBER = "-=DEFAULT_STRING=-";
+           IMAGE = "-=DEFAULT_STRING=-";
            USER_ID = -9999;
        }
 
@@ -77,5 +81,9 @@ namespace Flight_Center_Project_FinalExam_DAL
 
             return str;
         }
+
+
+       public void Dispose() { }
+
    }
 }

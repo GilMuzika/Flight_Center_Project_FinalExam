@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Center_Project_FinalExam_DAL
 {
-    public class Utility_class_UserDAOMSSQL<T> : UserBaseMSSQLDAO<T>, IUtility_class_UserDAO<T> where T : Utility_class_User, IPoco, IUser, new()
+    public class Utility_class_UserDAOMSSQL<T> : UserBaseMSSQLDAO<T>, IUtility_class_UserDAO<T> where T : Utility_class_User, IPoco, new()
     {
         public Utility_class_UserDAOMSSQL() : base() { }
 

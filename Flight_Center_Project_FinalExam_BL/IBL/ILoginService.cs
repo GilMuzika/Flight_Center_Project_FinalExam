@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Flight_Center_Project_FinalExam_BL
 {
-    interface ILoginService<T> where T : class, IUser, IPoco
+    interface ILoginService<T> where T : class, IPoco
     {
         //bool TryAdminLogin(string userName, string password, out LoginToken<Administrator> token);
         //bool TryAirlineLogin(string userName, string password, out LoginToken<AirlineCompany> token);

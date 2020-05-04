@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Center_Project_FinalExam_DAL
 {
-    public interface IAdministratorDAO<T>: IUserBaseDAO<T> where T : class, IPoco, IUser, new()
+    public interface IAdministratorDAO<T>: IUserBaseDAO<T> where T : class, IPoco, new()
     {
     }
 }

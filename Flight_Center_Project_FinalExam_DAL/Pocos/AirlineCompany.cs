@@ -11,7 +11,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            USER_ID = 3
   }
 
-  public class AirlineCompany : IPoco, IUser
+  public class AirlineCompany : PocoBase, IPoco
    {
        public Int64 ID { get; set; }
        public String AIRLINE_NAME { get; set; }

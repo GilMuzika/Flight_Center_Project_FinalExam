@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flight_Center_Project_Final
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flight_Center_Project_FinalExam_UnitTest", "Flight_Center_Project_FinalExam_UnitTest\Flight_Center_Project_FinalExam_UnitTest.csproj", "{119C2058-1F68-4C90-8FFC-FF02CD74E9C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flight_Center_Project_FinalExam_WPF_interface", "Flight_Center_Project_FinalExam_WPF_interface\Flight_Center_Project_FinalExam_WPF_interface.csproj", "{30F8115D-1918-4DB1-88F4-98F1C57F9A81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flight_Center_Project_FinalExam_WPF_interface", "Flight_Center_Project_FinalExam_WPF_interface\Flight_Center_Project_FinalExam_WPF_interface.csproj", "{30F8115D-1918-4DB1-88F4-98F1C57F9A81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBase_Generator_WPF", "DataBase_Generator_WPF\DataBase_Generator_WPF.csproj", "{ED037D27-2047-4689-BF3C-7384B4DE15C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_Api_interface", "Web_Api_interface\Web_Api_interface.csproj", "{664F642A-ED86-404B-A609-B48E195A146D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_Api_interface.Tests", "Web_Api_interface.Tests\Web_Api_interface.Tests.csproj", "{DD8FCD80-623A-4AFC-A7CF-BC8728A62D70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,18 @@ Global
 		{30F8115D-1918-4DB1-88F4-98F1C57F9A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30F8115D-1918-4DB1-88F4-98F1C57F9A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30F8115D-1918-4DB1-88F4-98F1C57F9A81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED037D27-2047-4689-BF3C-7384B4DE15C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED037D27-2047-4689-BF3C-7384B4DE15C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED037D27-2047-4689-BF3C-7384B4DE15C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED037D27-2047-4689-BF3C-7384B4DE15C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{664F642A-ED86-404B-A609-B48E195A146D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{664F642A-ED86-404B-A609-B48E195A146D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{664F642A-ED86-404B-A609-B48E195A146D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{664F642A-ED86-404B-A609-B48E195A146D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD8FCD80-623A-4AFC-A7CF-BC8728A62D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD8FCD80-623A-4AFC-A7CF-BC8728A62D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD8FCD80-623A-4AFC-A7CF-BC8728A62D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD8FCD80-623A-4AFC-A7CF-BC8728A62D70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

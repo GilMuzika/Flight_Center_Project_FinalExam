@@ -10,7 +10,7 @@ using Flight_Center_Project_FinalExam_DAL;
 
 namespace Flight_Center_Project_FinalExam_testingInterface
 {
-    class TestInterfaceContainerPanel<T>: Panel where T : class, IPoco, IUser, new()
+    class TestInterfaceContainerPanel<T>: Panel where T : class, IPoco, new()
     {        
         private DAO<T> _currentInControlDAO;
 

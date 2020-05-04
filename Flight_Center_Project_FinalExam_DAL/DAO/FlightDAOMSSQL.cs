@@ -13,8 +13,12 @@ namespace Flight_Center_Project_FinalExam_DAL
     {
         public FlightDAOMSSQL(): base() { }
 
+        /// <summary>
+        /// returns dictionary with all the flights as keys and their respective numbers of remaining tickets as values
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<Flight, int> GetAllFlightVacancty()
-        {
+        {            
             Dictionary<Flight, int> allFlightVacancty = new Dictionary<Flight, int>();
             foreach(var s in this.GetAll()) allFlightVacancty.Add(s, s.REMAINING_TICKETS);
             return allFlightVacancty;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Center_Project_FinalExam_DAL
 {
-    public class AirlineDAOMSSQL<T> : UserBaseMSSQLDAO<T>, IAirlineDAO<T> where T : AirlineCompany, IPoco, IUser, new()
+    public class AirlineDAOMSSQL<T> : UserBaseMSSQLDAO<T>, IAirlineDAO<T> where T : AirlineCompany, IPoco, new()
     {
         public AirlineDAOMSSQL(): base() {  }
 

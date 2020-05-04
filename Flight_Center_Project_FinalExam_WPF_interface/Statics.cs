@@ -7,7 +7,10 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Controls;
 using System.Threading.Tasks;
-
+using System.Windows;
+using System.Windows.Shapes;
+using System.Windows.Media;
+using System.Dynamic;
 
 namespace Flight_Center_Project_FinalExam_WPF_interface
 {
@@ -36,7 +39,7 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
 
 
 
-        public static void drawBorder<T>(this T drawableObject, int borderWidth, Color bordercolor) where T : class
+        public static void drawBorder<T>(this T drawableObject, int borderWidth, System.Drawing.Color bordercolor) where T : class
         {
             int width = 0; int height = 0;
             if (drawableObject is System.Drawing.Image) { width = (drawableObject as System.Drawing.Image).Width; height = (drawableObject as System.Drawing.Image).Height; }
@@ -45,7 +48,7 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
             Bitmap bitmap = new Bitmap(width, height);
             Graphics graphicsObj = Graphics.FromImage(bitmap);
 
-            Pen myPen = new Pen(bordercolor, borderWidth);
+            System.Drawing.Pen myPen = new System.Drawing.Pen(bordercolor, borderWidth);
             graphicsObj.DrawRectangle(myPen, 0, 0, width - 1, height - 1);
 
             if (drawableObject is System.Drawing.Image) drawableObject = bitmap as T;
@@ -185,6 +188,41 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
                 rngCsp.GetBytes(randomBytes);
             }
             return randomBytes;
+        }
+
+        public static void AddPropertyToExpandoObject(ExpandoObject expando, string propertyName, object propertyValue)
+        {
+            // ExpandoObject supports IDictionary so we can extend it like this
+            var expandoDict = expando as IDictionary<string, object>;
+            if (expandoDict.ContainsKey(propertyName))
+                expandoDict[propertyName] = propertyValue;
+            else
+                expandoDict.Add(propertyName, propertyValue);
+        }
+
+
+
+
+
+
+        /// <summary>
+        /// Creating WPF DataTepmplate
+        /// </summary>
+        /// <returns></returns>
+        public static DataTemplate CreateRectangleDataTemplate()
+        {
+            var rectangleFactory = new FrameworkElementFactory(typeof(System.Drawing.Rectangle));
+            rectangleFactory.SetValue(Shape.FillProperty, new SolidColorBrush(System.Windows.Media.Colors.LightGreen));
+
+            return new DataTemplate
+            {
+                VisualTree = rectangleFactory,
+            };
+        }
+
+        public static void AddRectangleTemplateToResources(FrameworkElement element)
+        {
+            element.Resources.Add("lightGreenRectangle", CreateRectangleDataTemplate());
         }
 
 

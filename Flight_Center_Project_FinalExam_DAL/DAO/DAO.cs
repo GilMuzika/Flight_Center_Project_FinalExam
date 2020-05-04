@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace Flight_Center_Project_FinalExam_DAL
 {   
     public abstract class DAO<T>: IBasicDB<T> where T : class, IPoco, new()
     {
+        protected List<Dictionary<string, string>> _dataAboutForeignKeysOfAllTables;
+
         protected SqlConnection _connection = new SqlConnection();
         protected SqlCommand _command = new SqlCommand();
 
@@ -32,6 +35,9 @@ namespace Flight_Center_Project_FinalExam_DAL
             _command.Connection = _connection;
 
             this.SetConnectionString();
+
+            //information about all the foreign keys of all the tables in the current DB (relying on Poco classes definitions)
+            _dataAboutForeignKeysOfAllTables = RetriveForeignKeysOfAllTables();
         }
 
         #region private and protected methods for DAL internal usage
@@ -71,7 +77,11 @@ namespace Flight_Center_Project_FinalExam_DAL
         }
         protected void SetConnectionString()
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            Configuration config = null;
+            if (System.Web.HttpContext.Current == null)
+                config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            else
+                config = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
 
 
             //string connStrAddition = @"\SQLEXPRESS"; - for class machines
@@ -110,10 +120,23 @@ namespace Flight_Center_Project_FinalExam_DAL
             string tableName = string.Empty;
             foreach (var s in this.GetAllTableNames())
             {
-                if (s.Contains(pocoType.Name.ChopCharsFromTheEnd(1))) tableName = s;
+                //if (s.Contains(pocoType.Name.ChopCharsFromTheEnd(1))) tableName = s;
+                string pocoType_Name = string.Empty;
+                if (pocoType.Name.Contains("History")) pocoType_Name = pocoType.Name;
+                else pocoType_Name = pocoType.Name.PluraliseNoun();                
+
+                if (s.Equals(pocoType_Name)) tableName = s;
             }
             return tableName;
         }
+        /// <summary>
+        /// This method allows to get a Poco object of type T by value of any property of this object.
+        /// The firts parameter is the value by which we get the object, the second parameter is an enumeration value which corresponds to the number of the property in question. It needs to be casted to "int".
+        /// The enumeration resides in each poco.
+        /// </summary>
+        /// <param name="identifier">Object with value and underlying data type of the corresponding property.</param>
+        /// <param name="propertyNumber">Enumeration value the corresponds to the number of the property</param>
+        /// <returns></returns>
         public T GetSomethingBySomethingInternal(object identifier, int propertyNumber)
         {
             try
@@ -126,6 +149,7 @@ namespace Flight_Center_Project_FinalExam_DAL
                 if (identifier.GetType().Name == "String") identifierInQMarks = $"'{identifier}'";
                 else identifierInQMarks = identifier.ToString();
                 //_command.CommandText = $"SELECT * FROM {tableName} WHERE {relevantColumnName} = {identifierInQMarks}";
+                _command.CommandType = CommandType.StoredProcedure;
                 _command.CommandText = "DAO_BASE_GetSomethingBySomethingInternal_METHOD_QUERY";
 
                 _command.Parameters.Clear();
@@ -188,7 +212,7 @@ namespace Flight_Center_Project_FinalExam_DAL
         protected T GetSomethingInOneTableBySomethingInAnotherInternal(object byWhatInOneTable, int anotherPocoTypePropertyNumber, Type anotherPocoType)
         {
             try
-            {
+            {                
                 _connection.Open();
                 T something = new T();
                 string tableName = this.GetTableName(typeof(T));
@@ -198,7 +222,7 @@ namespace Flight_Center_Project_FinalExam_DAL
                 string identifyer_ByWhatInQMarks = string.Empty;
                 if (byWhatInOneTable.GetType().Name == "String") identifyer_ByWhatInQMarks = $"'{byWhatInOneTable}'";
                 else identifyer_ByWhatInQMarks = byWhatInOneTable.ToString();
-
+                
                 string leftSideOfONStatement = "USER_ID";
                 string rightSideOfONStatement = "ID";
                 if (typeof(T).Name == "Utility_class_User")
@@ -207,6 +231,8 @@ namespace Flight_Center_Project_FinalExam_DAL
                     rightSideOfONStatement = "USER_ID";
                 }
 
+                //_command.CommandType = CommandType.Text;
+                _command.CommandType = CommandType.StoredProcedure;
                 //_command.CommandText = $"SELECT {tableName}.* FROM {tableName} JOIN {anothertablename} ON {tableName}.{leftSideOfONStatement} = {anothertablename}.{rightSideOfONStatement} WHERE {anothertablename}.{relevantColumnNameInAnotherTable} = {identifyer_ByWhatInQMarks}";
                 _command.CommandText = "DAO_BASE_GetSomethingInOneTableBySomethingInAnotherInternal_METHOD_QUERY";
 
@@ -248,6 +274,51 @@ namespace Flight_Center_Project_FinalExam_DAL
             instanceTypeCorrelation[daoType]();
         }
 
+        /// <summary>
+        /// Retriving information about all the foreign keys of all the tables in the current DB.
+        /// Relies on Poco classes definitions.
+        /// </summary>
+        /// <returns></returns>
+        private List<Dictionary<string, string>> RetriveForeignKeysOfAllTables()
+        {
+            try
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                List<Type> classes = assembly.GetExportedTypes().Where(x => typeof(IPoco).IsAssignableFrom(x) && !x.IsInterface).ToList();
+
+                _command.CommandType = CommandType.Text;
+                List<Dictionary<string, string>> foreign_key_tables_dataLst = new List<Dictionary<string, string>>();
+
+                _connection.Open();
+                foreach(Type classType in classes)
+                {
+                    _command.CommandText = "SELECT OBJECT_NAME(parent_object_id) AS [FK Table], name AS [Foreign Key], " +
+                                           "OBJECT_NAME(referenced_object_id) AS [PK Table] FROM sys.foreign_keys " +
+                                           $"WHERE parent_object_id = OBJECT_ID('{this.GetTableName(classType)}');";
+
+
+                    string[] fk_data_table_namesArr = new string[] { "Foreign_Key_Table", "Foreign_Key_Name", "Primary_Key_Table" }; //there are keys of the dictionaries, they're constatnt and used as labels
+                    using (SqlDataReader reader = _command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Dictionary<string, string> dataDict = new Dictionary<string, string>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                object value = reader[i];
+                                dataDict.Add(fk_data_table_namesArr[i], value.ToString());
+                            }
+                            foreign_key_tables_dataLst.Add(dataDict);
+                        }
+                    }
+                }
+
+                return foreign_key_tables_dataLst;
+            }
+            finally { _connection.Close(); }
+            
+        }
+
         #endregion
 
         #region Public service methods 
@@ -258,9 +329,11 @@ namespace Flight_Center_Project_FinalExam_DAL
                 List<T> toReturn = new List<T>();
                 _connection.Open();
                 //_command.CommandText = $"select * from {GetTableName(typeof(T))}";
+                _command.CommandType = CommandType.StoredProcedure;
                 _command.CommandText = "DAO_BASE_GetAll_METHOD_QUERY";
 
                 _command.Parameters.Clear();
+                var r = GetTableName(typeof(T));
                 _command.Parameters.AddWithValue("TABLE_NAME", GetTableName(typeof(T)));
                 using (SqlDataReader reader = _command.ExecuteReader())
                 {
@@ -292,11 +365,17 @@ namespace Flight_Center_Project_FinalExam_DAL
             
         }
 
-
-        public virtual void Add(T poco)
+        /// <summary>
+        /// The method supposedly returns the ID of the object that has been added.
+        /// Otherwise returns -1
+        /// </summary>
+        /// <param name="poco">Object to adding to the database</param>
+        /// <returns></returns>
+        public virtual long Add(T poco)
         {
             _connection.Open();
             string tableName = GetTableName(typeof(T));
+            long IDvalue = -1;
             try
             {
                 _command.CommandType = CommandType.Text;
@@ -308,7 +387,7 @@ namespace Flight_Center_Project_FinalExam_DAL
                 _command.Parameters.AddWithValue("SECOND_COLUMN_NAME", name);
                 _command.Parameters.AddWithValue("SECOND_COLUMN_VALUE", value);*/
 
-                var IDvalue = Convert.ToInt64(_command.ExecuteScalar());
+                IDvalue = Convert.ToInt64(_command.ExecuteScalar());
                 poco.GetType().GetProperties()[0].SetValue(poco, IDvalue);
 
                 for (int i = 2; i < typeof(T).GetProperties().Length; i++)
@@ -324,6 +403,7 @@ namespace Flight_Center_Project_FinalExam_DAL
                 }
             }
             finally { _connection.Close(); }
+            return IDvalue;
         }
 
         public T Get(long ID)
@@ -379,6 +459,41 @@ namespace Flight_Center_Project_FinalExam_DAL
             }
             finally { _connection.Close(); }
         }
+        public virtual void DeleteAllNotRegardingForeignKeys()
+        {
+            try
+            {
+                _connection.Open();
+                string tableName = this.GetTableName(typeof(T));
+                _command.CommandType = CommandType.Text;
+                bool isHaveForeignKey = false;
+                string primaryKeyTableName = string.Empty;
+                string foreignKeyTableName = string.Empty;
+                foreach (var sDict in _dataAboutForeignKeysOfAllTables)
+                {
+                    sDict.TryGetValue("Primary_Key_Table", out primaryKeyTableName);
+                    sDict.TryGetValue("Foreign_Key_Table", out foreignKeyTableName);
+                    if(tableName.Equals(primaryKeyTableName))
+                    {
+                        isHaveForeignKey = true;
+                        _command.CommandText = $"alter table {foreignKeyTableName} nocheck constraint all";
+                        _command.ExecuteNonQuery();
+                        break;
+                    }
+
+                }
+
+                _command.CommandText = $"DELETE FROM {tableName}";
+                _command.ExecuteNonQuery();
+
+                if(isHaveForeignKey)
+                {
+                    _command.CommandText = $"alter table {foreignKeyTableName} check constraint all";
+                    _command.ExecuteNonQuery();
+                }
+            }
+            finally { _connection.Close(); }
+        }
         public virtual void Remove(long ID)
         {
             try
@@ -402,7 +517,8 @@ namespace Flight_Center_Project_FinalExam_DAL
                 string tableName = this.GetTableName(typeof(T));
                 var propInfos = poco.GetType().GetProperties();
                 string firstColumnName = propInfos[0].Name;
-                object firstColumnValue = propInfos[0].GetValue(poco);                
+                object firstColumnValue = propInfos[0].GetValue(poco);
+                
                 for (int i = 1; i < propInfos.Length; i++)
                 {
                     var value = typeof(T).GetProperties()[i].GetValue(poco);
@@ -420,7 +536,8 @@ namespace Flight_Center_Project_FinalExam_DAL
                     _command.ExecuteNonQuery();
                 }                
             }
-            finally { _connection.Close(); }
+            finally { _connection.Close(); }            
+
         }
         #endregion
 

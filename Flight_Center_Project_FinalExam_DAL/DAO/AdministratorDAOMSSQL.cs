@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Center_Project_FinalExam_DAL
 {
-    public class AdministratorDAOMSSQL<T> : UserBaseMSSQLDAO<T>, IAdministratorDAO<T> where T : Administrator, IPoco, IUser, new()
+    public class AdministratorDAOMSSQL<T> : UserBaseMSSQLDAO<T>, IAdministratorDAO<T> where T : Administrator, IPoco, new()
     {
         public AdministratorDAOMSSQL() : base() { }    
         

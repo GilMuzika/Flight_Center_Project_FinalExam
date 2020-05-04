@@ -14,7 +14,7 @@ namespace Flight_Center_Project_FinalExam_UnitTest
     /// </summary>
 
     [TestClass]
-    public class LoginService
+    public class LoginService_Test
     {
         [TestMethod]
         public void TryUserLogin_Customer_Test()
@@ -37,5 +37,7 @@ namespace Flight_Center_Project_FinalExam_UnitTest
             Assert.AreEqual(loginTokenExpected.ActualUser, loginTokenActual.ActualUser);
 
         }
+
+
     }
 }

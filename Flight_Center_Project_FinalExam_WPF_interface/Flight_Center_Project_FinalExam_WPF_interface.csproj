@@ -7,17 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.2.0.1422" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Flight_Center_Project_FinalExam_BL\Flight_Center_Project_FinalExam_BL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Configuration">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\dotnet\shared\Microsoft.NETCore.App\3.1.1\System.Configuration.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

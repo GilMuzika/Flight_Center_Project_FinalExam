@@ -1,0 +1,118 @@
+﻿using Flight_Center_Project_FinalExam_BL;
+using Flight_Center_Project_FinalExam_DAL;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Http;
+using System.Web.Http.Description;
+
+namespace Web_Api_interface.Controllers
+{
+    [RoutePrefix("api/Example")]
+    [ExampleBasicAutentication]
+    public class ExampleController : ApiController, IAnonimousUserFacadeController
+    {        
+
+        FlyingCenterSystem _fsc = FlyingCenterSystem.GetInstance();
+
+        LoggedInCustomerFacade _loggedInCustomerFacade;
+
+        public ExampleController()
+        {
+            _loggedInCustomerFacade = _fsc.getFacede<LoggedInCustomerFacade>();
+        }
+
+        [ResponseType(typeof(AirlineCompany))]
+        [HttpGet]
+        [Route("GetAllAirlineCompanies", Name = "ExampleCustomerGetAllAirlineCompanies")]
+        public IHttpActionResult GetAllAirlineCompanies()
+        {
+            /*
+            //username come from BasicAutenticationAttribute class through Principal of the thread
+            string userName = Thread.CurrentPrincipal.Identity.Name;
+            */
+            /*
+             //username come from BasicAutenticationAttribute class through Principal of the request
+             
+            string userName = Request.GetRequestContext().Principal.Identity.Name;
+            */
+
+            //The way to take an object from the Request's bag(a "actionContext.Request.Properties" dictionary).              
+            //You need to use the same key that was used in putting the object in the dictionary
+            //Also the generic type of the dictionary is "Dictionary<string, object>", so the object need a casting to it's original type.
+
+            //Retrieving the registered user data from a static field:
+            Utility_class_User registeredUser = ExampleBasicAutenticationAttribute._registeredUser;
+
+            //Retrieving the registered user data from "Request.Properties" dictionary:
+            Request.Properties.TryGetValue("registered_user", out object anotherCopyOfTheRegistereduser);
+
+            anotherCopyOfTheRegistereduser = (Utility_class_User)anotherCopyOfTheRegistereduser;
+
+            var usernameAndPasswordArr = (string[])Request.Properties["arbitrary_key"];
+
+
+            List<AirlineCompany> airlineCompanies = _loggedInCustomerFacade.GetAllAirlineCompanies();
+            if (airlineCompanies.Count == 0) return NotFound();
+
+            return Ok(airlineCompanies);
+        }
+
+        [ResponseType(typeof(Flight))]
+        [HttpGet]
+        public IHttpActionResult GetAllFlights()
+        {
+            throw new NotImplementedException();
+        }
+
+        [ResponseType(typeof(Flight))]
+        [HttpGet]
+        public IHttpActionResult GetAllFlightsVacancy()
+        {
+            throw new NotImplementedException();
+        }
+
+        [ResponseType(typeof(Flight))]
+        [HttpPost]
+        public IHttpActionResult GetFlightByDepartureDate([FromBody] DateTime departureTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        [ResponseType(typeof(Flight))]
+        [HttpPost]
+        public IHttpActionResult GetFlightByDestinationCountry([FromBody] Country destinationCountry)
+        {
+            throw new NotImplementedException();
+        }
+
+        [ResponseType(typeof(Flight))]
+        [HttpGet]
+        public IHttpActionResult GetFlightByDestinationCountry([FromUri] int destinationCountryCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        [ResponseType(typeof(Flight))]
+        [HttpPost]
+        public IHttpActionResult GetFlightByLandingDate([FromBody] DateTime landingDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        [ResponseType(typeof(Flight))]
+        [HttpPost]
+        public IHttpActionResult GetFlightByOriginCountry([FromBody] Country originCountry)
+        {
+            throw new NotImplementedException();
+        }
+
+        [ResponseType(typeof(Flight))]
+        [HttpGet]
+        public IHttpActionResult GetFlightByOriginCountry([FromUri] int originCountryCode)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

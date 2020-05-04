@@ -10,7 +10,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            USER_ID = 2
   }
 
-  public class Administrator : IPoco, IUser
+  public class Administrator : PocoBase, IPoco
    {
        public Int64 ID { get; set; }
        public String NAME { get; set; }

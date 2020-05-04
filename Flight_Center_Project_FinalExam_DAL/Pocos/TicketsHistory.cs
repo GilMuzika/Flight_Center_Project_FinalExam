@@ -10,7 +10,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            CUSTOMER_ID = 2
   }
 
-  public class TicketsHistory : IPoco
+  public class TicketsHistory : PocoBase, IPoco
    {
        public Int64 ID { get; set; }
        public Int64 FLIGHT_ID { get; set; }

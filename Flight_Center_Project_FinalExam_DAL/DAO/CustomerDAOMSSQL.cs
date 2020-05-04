@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Center_Project_FinalExam_DAL
 {
-    public class CustomerDAOMSSQL<T> : UserBaseMSSQLDAO<T>, ICustomerDAO<T> where T : Customer, IPoco, IUser, new()
+    public class CustomerDAOMSSQL<T> : UserBaseMSSQLDAO<T>, ICustomerDAO<T> where T : Customer, IPoco,  new()
     {
         public CustomerDAOMSSQL(): base() { }
 

@@ -13,5 +13,10 @@ namespace Flight_Center_Project_FinalExam_DAL
     {
         public TicketDAOMSSQL(): base() { }
 
+        public Ticket GetByFlightID(long flightId)
+        {
+            return GetSomethingBySomethingInternal(flightId, (int)TicketPropertyNumber.FLIGHT_ID);
+        }
+
     }
 }

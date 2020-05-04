@@ -70,6 +70,14 @@ namespace Flight_Center_Project_FinalExam_DAL
             return ChopCharsFromTheEnd(str, str.Length - charsNum);
         }
 
+        static public string PluraliseNoun(this string noun)
+        {
+            string pluralNoun = string.Empty;
+            if (noun.Last() == 'y') pluralNoun = noun.ChopCharsFromTheEnd(1) + "ies";
+            else pluralNoun = noun + 's';
+            return pluralNoun;
+        }
+
 
 
 

@@ -27,7 +27,7 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
 
         private ViewModel _viewModel = new ViewModel();
 
-        private readonly LoginToken<IPoco> _token = null;
+        private LoginToken<PocoBase> _token = null;
         private bool _isLoginSucseeded = false;
         public bool IsLoginSucseeded
         {
@@ -44,8 +44,10 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
         }
 
 
-        private LoginService<Customer> loginService = new LoginService<Customer>();
-      
+        //private LoginService<Customer> loginService = new LoginService<Customer>();
+        private LoginService<PocoBase> loginService = new LoginService<PocoBase>();
+
+
         private FlyingCenterSystem _fcs = null;
         private IAnonymousUserFacade _facade = null;        
 
@@ -59,19 +61,33 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
         {        
             string username = txtUserName.Text;
             string password = txtPassword.Text;
-            Type userType = LoginServiceHelper_IUserTypeEvaluator.Evaluate(username, password);
-            IsLoginSucseeded = loginService.TryUserLogin(username, password, out LoginToken<Customer> _token);            
 
-
-            
-            if (_token != null && _token.UserAsUser.USER_NAME == txtUserName.Text && _token.UserAsUser.PASSWORD == txtPassword.Text)
+            Type userType = null;
+            Action act = () =>
             {
-                tblLogintextBlock.Text = "Congratulations!";
-                _fcs = FlyingCenterSystem.GetInstance();
-                _facade = GetProperFacade(userType);
+                userType = LoginServiceHelper_IUserTypeEvaluator.Evaluate(username, password);
+                IsLoginSucseeded = loginService.TryUserLogin(username, password, out _token);
+            };
+            ProcessExceptions(act);
 
-            }
-            else MessageBox.Show("איזה לוזר!");     
+
+
+
+
+
+            act  = () =>
+            {
+                if (_token != null && _token.UserAsUser.USER_NAME == txtUserName.Text && _token.UserAsUser.PASSWORD == txtPassword.Text)
+                {
+                    tblLogintextBlock.Text = $"Congratulations!, {_token.ActualUser.GetType().Name} {_token.ActualUser.GetType().GetProperties()[1].GetValue(_token.ActualUser)}!";
+                    _fcs = FlyingCenterSystem.GetInstance();
+                    _facade = GetProperFacade(userType);
+
+                }
+                else MessageBox.Show("איזה לוזר!");
+            };
+            ProcessExceptions(act);
+
         }
 
         private IAnonymousUserFacade GetProperFacade(Type type)
@@ -93,11 +109,12 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Action act = () =>
+            /*Action act = () =>
             {
                 lblFlyProperties.Content = _viewModel.GetFlightByNumber(txtFlightNumber.Text).ToString();
             };
-            ProcessExceptions(act);                      
+            ProcessExceptions(act);*/
+            ProcessExceptions(() => { lblFlyProperties.Content = _viewModel.GetFlightByNumber(txtFlightNumber.Text).ToString(); });
         }
 
         private void ProcessExceptions(Action act)
@@ -111,5 +128,6 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
                 MessageBox.Show($"{ex.GetType().Name}\n\n{ex.Message}\n\n\n{ex.StackTrace}");
             }
         }
+
     }
 }

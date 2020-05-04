@@ -26,8 +26,8 @@ namespace Flight_Center_Project_FinalExam_testingInterface
         {
             this.Height = Screen.PrimaryScreen.WorkingArea.Height - 200;
             this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Width / 2 + this.Width / 2, 0);
-            this.Controls.Add(new TestInterfaceBasePanel<Utility_class_User>(new Point(0, 0)));
-            this.Controls.Add(new TestInterfaceBasePanel<Customer>(new Point(470, 0)));
+            this.Controls.Add(new TestInterfaceBasePanel<Customer>(new Point(0, 0)));
+            this.Controls.Add(new TestInterfaceBasePanel<Flight>(new Point(470, 0)));
         }
         private void ShowAll()
         {

@@ -1,0 +1,75 @@
+using System;
+
+namespace DataBase_Generator_WPF
+{
+
+   public class Currencies
+   {
+   public String code { get; set; }
+   public String name { get; set; }
+   public String symbol { get; set; }
+   }
+
+   public class Languages
+   {
+   public String iso639_1 { get; set; }
+   public String iso639_2 { get; set; }
+   public String name { get; set; }
+   public String nativeName { get; set; }
+   }
+
+   public class Translations
+   {
+   public String de { get; set; }
+   public String es { get; set; }
+   public String fr { get; set; }
+   public String ja { get; set; }
+   public String it { get; set; }
+   public String br { get; set; }
+   public String pt { get; set; }
+   public String nl { get; set; }
+   public String hr { get; set; }
+   public String fa { get; set; }
+   }
+
+   public class RegionalBlocs
+   {
+   public String acronym { get; set; }
+   public String name { get; set; }
+   }
+
+   public class JsonCountry
+   {
+   public String name { get; set; }
+    public String[] topLevelDomain { get; set; }
+   public String alpha2Code { get; set; }
+   public String alpha3Code { get; set; }
+    public String[] callingCodes { get; set; }
+   public String capital { get; set; }
+    public String[] altSpellings { get; set; }
+   public String region { get; set; }
+   public String subregion { get; set; }
+   public int? population { get; set; }
+    public float?[] latlng { get; set; }
+   public String demonym { get; set; }
+   public float? area { get; set; }
+   public float? gini { get; set; }
+    public String[] timezones { get; set; }
+    public String[] borders { get; set; }
+   public String nativeName { get; set; }
+   public String numericCode { get; set; }
+    public Currencies[] currencies { get; set; }
+    public Languages[] languages { get; set; }
+    public Translations translations { get; set; }
+   public String flag { get; set; }
+    public RegionalBlocs[] regionalBlocs { get; set; }
+   public String cioc { get; set; }
+   }
+
+   public class CountriesAPIObject
+   {
+    public JsonCountry[] class1_Property1 { get; set; }
+   }
+
+}
+

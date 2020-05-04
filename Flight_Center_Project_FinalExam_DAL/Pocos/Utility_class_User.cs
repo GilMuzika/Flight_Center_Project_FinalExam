@@ -14,8 +14,8 @@ namespace Flight_Center_Project_FinalExam_DAL
            ADMINISTRATOR_ID = 6
   }
 
-  public class Utility_class_User : IPoco, IUser
-   {
+  public class Utility_class_User : PocoBase, IPoco, IDisposable
+    {
        public Int64 ID { get; set; }
        public String USER_NAME { get; set; }
        public String PASSWORD { get; set; }
@@ -77,5 +77,9 @@ namespace Flight_Center_Project_FinalExam_DAL
 
             return str;
         }
-   }
+
+        public void Dispose() { }
+
+        
+    }
 }

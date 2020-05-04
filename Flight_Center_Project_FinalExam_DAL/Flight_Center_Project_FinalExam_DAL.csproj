@@ -60,6 +60,7 @@
     </Reference>
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,9 +72,12 @@
     <Compile Include="DAO\AdministratorDAOMSSQL.cs" />
     <None Include="DAO\DAO_copy.cs_" />
     <Compile Include="DAO\FlightHistoryDAOMSSQL.cs" />
+    <Compile Include="DAO\HistoryTrackingDAOMSSQL.cs" />
     <Compile Include="DAO\UserBaseMSSQLDAO.cs" />
     <Compile Include="DAO\Utility_class_UserDAOMSSQL.cs" />
     <Compile Include="DAO\DAO.cs" />
+    <Compile Include="EncryptionProvider.cs" />
+    <Compile Include="IDAL\IHistoryTrackingDAO.cs" />
     <Compile Include="IDAL\ISystemUserBase.cs" />
     <Compile Include="IDAL\IUtility_class_UserDAO.cs" />
     <Compile Include="IDAL\IAdministratorDAO.cs" />
@@ -83,7 +87,6 @@
     <Compile Include="IDAL\IFlightDAO.cs" />
     <Compile Include="IDAL\IPoco.cs" />
     <Compile Include="IDAL\ITicketDAO.cs" />
-    <Compile Include="IDAL\IUser.cs" />
     <Compile Include="DAO\TicketHistoryDAOMSSQL.cs" />
     <None Include="packages.config" />
     <None Include="Pocos\backup\Administrator.cs_" />
@@ -97,9 +100,12 @@
     <Compile Include="Pocos\Administrator.cs" />
     <Compile Include="Pocos\AirlineCompany.cs" />
     <Compile Include="Pocos\Country.cs" />
+    <None Include="Pocos\Customer.cs_back" />
     <Compile Include="Pocos\Customer.cs" />
     <Compile Include="Pocos\Flight.cs" />
     <Compile Include="Pocos\FlightsHistory.cs" />
+    <Compile Include="Pocos\HistoryTracking.cs" />
+    <Compile Include="Pocos\PocoBase.cs" />
     <Compile Include="Pocos\Ticket.cs" />
     <Compile Include="Pocos\TicketsHistory.cs" />
     <Compile Include="Pocos\Utility_class_User.cs" />

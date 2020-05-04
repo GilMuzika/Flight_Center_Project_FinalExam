@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Flight_Center_Project_FinalExam_testingInterface
 {
-    class TestInterfaceBasePanel<T>: Panel where T : class, IPoco, IUser, new()
+    class TestInterfaceBasePanel<T>: Panel where T : class, IPoco, new()
     {
         private DAO<T> _currentInControlDAO;      
         private delegate DAO<T> createAppropriateDAOInstance();

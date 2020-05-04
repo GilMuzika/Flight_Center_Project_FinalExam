@@ -8,7 +8,7 @@ namespace Flight_Center_Project_FinalExam_WPF_interface
 {
     class Helper
     {
-        public static bool TryUserLoginGeneric<T>(string userName, string pasword) where T : class, IPoco, IUser, new()
+        public static bool TryUserLoginGeneric<T>(string userName, string pasword) where T : class, IPoco, new()
         {
             LoginService<T> loginService = new LoginService<T>();
             bool flag = loginService.TryUserLogin(userName, pasword, out LoginToken<T> token);

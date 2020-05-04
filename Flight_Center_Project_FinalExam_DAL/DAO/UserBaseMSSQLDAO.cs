@@ -65,7 +65,7 @@ namespace Flight_Center_Project_FinalExam_DAL
         /// <param name="poco"></param>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        public void Add(T poco, string userName, string password)
+        public long Add(T poco, string userName, string password)
         {
             SetAnotherDAOInstance(typeof(Utility_class_User));
             var user = BuildUser(poco, (long)typeof(T).GetProperty("ID").GetValue(poco), userName, password);
@@ -74,17 +74,43 @@ namespace Flight_Center_Project_FinalExam_DAL
             if(user2 == new Utility_class_User()) throw new RecentlyAddedRecordCantBeRetrivedException<Utility_class_User>(user);
 
             typeof(T).GetProperty("USER_ID").SetValue(poco, user2.ID);
-            base.Add(poco);
+            long addedPocoId = base.Add(poco);
             var poco2 = base.Get((long)typeof(T).GetProperties()[0].GetValue(poco));
             if (poco2.Equals(new T())) throw new RecentlyAddedRecordCantBeRetrivedException<T>(poco);
-                    
+
             //Utility_class_User user3 = _currentUserDAOMSSQL.GetUserByIdentifier2(poco2);            
+            return addedPocoId;
+        }
+
+
+        private Utility_class_User GetUtility_Class_User(T poco)
+        {
+            SetAnotherDAOInstance(typeof(Utility_class_User));
+
+            return _currentUserDAOMSSQL.Get((long)typeof(T).GetProperty("ID").GetValue(poco));
+
+        }
+
+        /// <summary>
+        /// צריך לשנות את כל הפונקציה הזאת מן היסוד
+        /// הלוגיקה היא למצוא משתמש בטבלת משתמשים 
+        /// Utility_class_User
+        /// עם הסיסמה הנתונה ולשנות אותה
+        /// </summary>
+        /// <param name="poco"></param>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// 
+        ///Uou need a new method for changing password. Think!!!!!!!!!!!!!!
+        ///Don't rely on your old methods!
+        public void ChangePassword()
+        {
 
         }
 
 
         public void Update(T poco, string userName, string password)
-        {            
+        {
             SetAnotherDAOInstance(typeof(Utility_class_User));
             var poco2 = base.Get((long)poco.GetType().GetProperty("ID").GetValue(poco));
             Utility_class_User user = _currentUserDAOMSSQL.GetUserByIdentifier(poco2);
@@ -97,8 +123,8 @@ namespace Flight_Center_Project_FinalExam_DAL
             typeof(T).GetProperty("USER_ID").SetValue(poco, user.ID);
             base.Update(poco);
             var poco3 = Get((long)typeof(T).GetProperty("ID").GetValue(poco));
-            if(Statics.ComparsionByEveryPropertyEquals<T>(poco3, poco2)) throw new RecentlyUpdatedRecordDidntChangedException<T>(poco3);
-            
+            if (Statics.ComparsionByEveryPropertyEquals<T>(poco3, poco2)) throw new RecentlyUpdatedRecordDidntChangedException<T>(poco3);
+
         }
         public override void Remove(T poco)
         {

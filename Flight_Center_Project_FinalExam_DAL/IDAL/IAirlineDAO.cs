@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Center_Project_FinalExam_DAL
 {
-    public interface IAirlineDAO<T>: IUserBaseDAO<T> where T : class, IPoco, IUser, new()
+    public interface IAirlineDAO<T>: IUserBaseDAO<T> where T : class, IPoco, new()
     {
         AirlineCompany GetAirlineByUsername(string airlineUsername);
         AirlineCompany GetAirlineByCountry(Country country);
