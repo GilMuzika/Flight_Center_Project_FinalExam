@@ -12,7 +12,7 @@ namespace Web_Api_interface.Controllers
         {
             ViewBag.Title = "Home Page";
 
-            return View();
+            return View(); 
         }
     }
 }

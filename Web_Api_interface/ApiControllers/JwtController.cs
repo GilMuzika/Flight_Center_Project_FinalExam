@@ -21,7 +21,7 @@ namespace Web_Api_interface.Controllers
     public class JwtController : ApiController
     {
         private JsonToDictionaryConverter _jsonToDictionaryConverter = new JsonToDictionaryConverter();
-
+         
 
         /// <summary>
         /// "SecretKey" string needed to initialize the "JWTService" service that creates the JWT token
