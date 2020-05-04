@@ -140,8 +140,6 @@ namespace DataBase_Generator_WPF
             customer.PHONE_NO = deserializedRandomUserObject.results[0].phone;
             customer.ADDRESS = $"{deserializedRandomUserObject.results[0].location.city}, {deserializedRandomUserObject.results[0].location.street} st, {deserializedRandomUserObject.results[0].location.coordinates.latitude} / {deserializedRandomUserObject.results[0].location.coordinates.longitude}";
             customer.CREDIT_CARD_NUMBER = Statics.Encrypt(Statics.DashingString(Statics.GetUniqueKeyOriginal_BIASED(20, Charset.OnlyNumber), 4), ENCRIPTION_PHRASE);
-            var v64strng  = ImageProvider.GetImageAs64BaseString();
-            //string base64string = Convert.ToBase64String(strm);
             customer.IMAGE = ImageProvider.GetImageAs64BaseString();
 
 

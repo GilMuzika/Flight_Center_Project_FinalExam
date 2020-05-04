@@ -231,7 +231,6 @@
     <Compile Include="IControllers\ILoggedInCustomerFacadeController.cs" />
     <Compile Include="Models\LoginResponseVM.cs" />
     <Compile Include="ApiControllers\JWTAutenticationAuxiliaries\UserValidator.cs" />
-    <None Include="ApiControllers\ExampleController.cs_back" />
     <Compile Include="ApiControllers\JWTAutenticationAuxiliaries\TokenValidationHandler.cs" />
     <Compile Include="ApiControllers\JwtController.cs" />
     <Compile Include="ApiControllers\TokenAutenticationAuxiliaries\MyAuthorizationServerProvider.cs" />

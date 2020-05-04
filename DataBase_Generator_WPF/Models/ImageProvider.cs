@@ -19,11 +19,7 @@ namespace DataBase_Generator_WPF
         }
 
         public static string GetImageAs64BaseString()
-        {
-            var image = Base64ToImage(Convert.ToBase64String(ReadToEnd(_imageString)));
-            // Bitmap newBitmap = new Bitmap(i);
-            var imageFormat = image.GetImageFormat(out string extension);
-            image.Save("sampleImage." + extension, imageFormat);
+        {          
             return Convert.ToBase64String(ReadToEnd(_imageString));
         }
 
@@ -143,6 +139,22 @@ namespace DataBase_Generator_WPF
                 imageExtension = "wmf";
                 return System.Drawing.Imaging.ImageFormat.Wmf;
             }
+        }
+
+
+
+
+        private static ImageCodecInfo GetEncoderInfo(String mimeType)
+        {
+            int j;
+            ImageCodecInfo[] encoders;
+            encoders = ImageCodecInfo.GetImageEncoders();
+            for (j = 0; j < encoders.Length; ++j)
+            {
+                if (encoders[j].MimeType == mimeType)
+                    return encoders[j];
+            }
+            return null;
         }
     }
 }
