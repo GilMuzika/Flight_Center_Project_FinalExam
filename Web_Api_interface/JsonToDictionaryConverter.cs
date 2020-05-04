@@ -33,8 +33,7 @@ namespace Web_Api_interface
 
             Dictionary<string, object> superDict = new Dictionary<string, object>();
             if (jObjectData is JArray)
-            {
-                //$"{name}Array__{_iterationsCount}"
+            {                
                 superDict.Add($"Class1_Property1Array__0", JsonToDictioanary(jObjectData));                
             }
             return superDict;
@@ -66,8 +65,7 @@ namespace Web_Api_interface
                                 if (!value.Children().FirstOrDefault().HasValues)
                                 {
                                     if (ReplaceJsonTypeByCsharpType(value.Children().FirstOrDefault().Type.ToString(), out string CsharpType))
-                                         dictionary.Add($"{name}_{CsharpType}Array__{_iterationsCount}", name);
-                                    //else dictionary.Add($"{name}_{value.Children().FirstOrDefault().Type}Array__{_iterationsCount}", name);
+                                         dictionary.Add($"{name}_{CsharpType}Array__{_iterationsCount}", name);                                    
                                     else dictionary.Add($"{name}_{value.Children().FirstOrDefault().Type}Array__{_iterationsCount}", name);
                                 }
                                 else
@@ -87,7 +85,7 @@ namespace Web_Api_interface
                                 dictionary.Add($"{name}_{CsharpType}__{_iterationsCount}", value.ToString());
                             else dictionary.Add($"{name}_{value.Type}__{_iterationsCount}", value.ToString());
                         }
-                        //_iterationsCount++;
+                        _iterationsCount++;
 
 
                         _upperLevelClassesCount++;
@@ -117,8 +115,7 @@ namespace Web_Api_interface
             Dictionary<string, string> jsonAndCsharpDataTypeCorrelation = new Dictionary<string, string>();
             jsonAndCsharpDataTypeCorrelation.Add("Date", "DateTime");
             jsonAndCsharpDataTypeCorrelation.Add("Integer", "int?");            
-            jsonAndCsharpDataTypeCorrelation.Add("Float", "float?");
-            //jsonAndCsharpDataTypeCorrelation.Add("Null", "string");
+            jsonAndCsharpDataTypeCorrelation.Add("Float", "float?");            
 
 
 
