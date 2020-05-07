@@ -38,9 +38,11 @@ namespace DataBase_Generator_WPF
                     //Process row
                     string[] fields = parser.ReadFields();
                     int count = 0;
+                    string adorning = string.Empty;
                     foreach (string field in fields)
                     {
-                        if(count == 1) dict.Add("name", field);
+                        adorning = string.Empty;
+                        if (count == 1) dict.Add("name", field);
                         if (count == 6)
                         {
                             if (field.Equals(@"\N")) dict.Add("country", "unknown_country");
@@ -48,6 +50,14 @@ namespace DataBase_Generator_WPF
                             else dict.Add("country", field);
                         }
                         
+                        if(count == 3)
+                        {
+                            if (!String.IsNullOrEmpty(field)) adorning = field + "-";
+                        }
+                        if (count == 4) { adorning += field; dict.Add("adorning", adorning); }
+
+                        
+
                         //TODO: Process field
                         count++;
                     }

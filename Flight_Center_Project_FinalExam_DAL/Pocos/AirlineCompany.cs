@@ -3,32 +3,40 @@ using System;
 namespace Flight_Center_Project_FinalExam_DAL
 {
 
-  enum AirlineCompanyPropertyNumber
+  public enum AirlineCompanyPropertyNumber
   {
            ID = 0,
            AIRLINE_NAME = 1,
            COUNTRY_CODE = 2,
-           USER_ID = 3
+           IMAGE = 3,
+           ADORNING = 4,
+           USER_ID = 5
   }
 
-  public class AirlineCompany : PocoBase, IPoco
+  public class AirlineCompany : IDisposable, IPoco
    {
        public Int64 ID { get; set; }
        public String AIRLINE_NAME { get; set; }
        public Int64 COUNTRY_CODE { get; set; }
+       public String IMAGE { get; set; }
+       public String ADORNING { get; set; }
        public Int64 USER_ID { get; set; }
 
 
-       public AirlineCompany( String aIRLINE_NAME, Int64 cOUNTRY_CODE, Int64 uSER_ID)
+       public AirlineCompany( String aIRLINE_NAME, Int64 cOUNTRY_CODE, String iMAGE, String aDORNING, Int64 uSER_ID)
        {
            AIRLINE_NAME = aIRLINE_NAME;
            COUNTRY_CODE = cOUNTRY_CODE;
+           IMAGE = iMAGE;
+           ADORNING = aDORNING;
            USER_ID = uSER_ID;
        }
        public AirlineCompany()
        {
            AIRLINE_NAME = "-=DEFAULT_STRING=-";
            COUNTRY_CODE = -9999;
+           IMAGE = "-=DEFAULT_STRING=-";
+           ADORNING = "-=DEFAULT_STRING=-";
            USER_ID = -9999;
        }
 
@@ -65,5 +73,9 @@ namespace Flight_Center_Project_FinalExam_DAL
 
             return str;
         }
+
+
+       public void Dispose() { }
+
    }
 }

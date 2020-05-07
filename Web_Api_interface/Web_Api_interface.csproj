@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Configuration.ConfigurationBuilders.Base, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Configuration.ConfigurationBuilders.Base.2.0.0\lib\Net471\Microsoft.Configuration.ConfigurationBuilders.Base.dll</HintPath>
     </Reference>
@@ -79,6 +82,7 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
       <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
@@ -235,7 +239,8 @@
     <Compile Include="ApiControllers\JwtController.cs" />
     <Compile Include="ApiControllers\TokenAutenticationAuxiliaries\MyAuthorizationServerProvider.cs" />
     <Compile Include="ApiControllers\TokenAutenticationAuxiliaries\Utility_class_UserRepository.cs" />
-    <Compile Include="ApiControllers\HomeController.cs" />
+    <Compile Include="MvcControllers\FlightSystemMainController.cs" />
+    <Compile Include="MvcControllers\HomeController.cs" />
     <Compile Include="IControllers\IAnonimousUserFacadeController.cs" />
     <Compile Include="ApiControllers\LoggedInCustomerFacadeController.cs" />
     <Compile Include="ApiControllers\ValuesController.cs" />
@@ -284,6 +289,14 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="ViewsImages\FlightSystemMain\arrivings.gif" />
+    <Content Include="ViewsImages\FlightSystemMain\background.png" />
+    <Content Include="ViewsImages\FlightSystemMain\bottomLeftCorner.gif" />
+    <Content Include="ViewsImages\FlightSystemMain\bottomRightCorner.gif" />
+    <Content Include="ViewsImages\FlightSystemMain\departures.gif" />
+    <Content Include="ViewsImages\FlightSystemMain\transparentTerminator.gif" />
+    <Content Include="ViewsImages\FlightSystemMain\upperLeftCorner.gif" />
+    <Content Include="ViewsImages\FlightSystemMain\upperRightCorner.gif" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -298,6 +311,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\FlightSystemMain\FlightSystemMainView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

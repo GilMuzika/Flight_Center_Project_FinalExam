@@ -30,6 +30,30 @@ namespace Flight_Center_Project_FinalExam_BL
             }
             return false;
         }
+        public bool CancelAllFlights(LoginToken<AirlineCompany> token)
+        {
+            if(CheckToken(token))
+            {
+                List<Flight> allFlights = _flightDAO.GetAll();
+                _ticketDAO.DeleteAll();
+                foreach(Flight flight in allFlights)
+                {
+                    _flightHistoryDAO.Add(flight.ConvertToHistoryObject<Flight, FlightsHistory>());
+
+                    HistoryTracking thisFlightTrackingInfo = new HistoryTracking();
+                    thisFlightTrackingInfo.HISTORY_ENTRY_ID = flight.ID;
+                    thisFlightTrackingInfo.HISTORY_ENTRY_KIND = flight.GetType().Name;
+                    thisFlightTrackingInfo.HISTORY_ENTRY_TIME = DateTime.UtcNow;
+
+                    _historyTrackingDAO.Add(thisFlightTrackingInfo);
+
+                    _flightDAO.Remove(flight);
+                }
+
+                if (_ticketDAO.GetAll().Count == 0 && _flightDAO.GetAll().Count == 0) return true;
+            }
+            return false;
+        }
 
         public bool ChangeMyPassword(LoginToken<AirlineCompany> token, string oldPassword, string newPassword, out bool isPasswordWrong)
         {

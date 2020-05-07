@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Web_Api_interface;
 using Web_Api_interface.Controllers;
+using Web_Api_interface.MvcControllers;
 
 namespace Web_Api_interface.Tests.Controllers
 {

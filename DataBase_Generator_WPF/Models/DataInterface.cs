@@ -7,6 +7,7 @@ using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -140,7 +141,7 @@ namespace DataBase_Generator_WPF
             customer.PHONE_NO = deserializedRandomUserObject.results[0].phone;
             customer.ADDRESS = $"{deserializedRandomUserObject.results[0].location.city}, {deserializedRandomUserObject.results[0].location.street} st, {deserializedRandomUserObject.results[0].location.coordinates.latitude} / {deserializedRandomUserObject.results[0].location.coordinates.longitude}";
             customer.CREDIT_CARD_NUMBER = Statics.Encrypt(Statics.DashingString(Statics.GetUniqueKeyOriginal_BIASED(20, Charset.OnlyNumber), 4), ENCRIPTION_PHRASE);
-            customer.IMAGE = ImageProvider.GetImageAs64BaseString();
+            customer.IMAGE = ImageProvider.GetResizedCustomerImageAs64BaseString(4);
 
 
             _currentWithUtility_clas_UserDAO = CreateAppropriateDAO_WithUtility_class_User();
@@ -170,16 +171,17 @@ namespace DataBase_Generator_WPF
             for (int i = 0; i < fixedNumber; i++) AddOneFlight();
         }
         private void AddOneFlight()
-        {          
+        {              
             Flight flight = new Flight();
             AirlineCompany randomAirline = _airlineCompanies[_rnd.Next(_airlineCompanies.Count)];
             flight.AIRLINECOMPANY_ID = randomAirline.ID;
             flight.ORIGIN_COUNTRY_CODE = _countries[_rnd.Next(_countries.Count)].ID;
             flight.DESTINATION_COUNTRY_CODE = _countries[_rnd.Next(_countries.Count)].ID;
             
-            var departureDateTime = Statics.GetRandomDate(DateTime.Now, new DateTime(DateTime.Now.Year, DateTime.Now.Month, _rnd.Next(0, 30)));
+            var departureDateTime = Statics.GetRandomDate(DateTime.Now, DateTime.Now.AddHours(Convert.ToDouble(_rnd.Next(5, 18))).AddMinutes(Convert.ToDouble(_rnd.Next(10, 55))));
             flight.DEPARTURE_TIME = departureDateTime;
-            flight.LANDING_TIME = Statics.GetRandomDate(flight.DEPARTURE_TIME, new DateTime(flight.DEPARTURE_TIME.Year, flight.DEPARTURE_TIME.Month, flight.DEPARTURE_TIME.Day, flight.DEPARTURE_TIME.Hour + _rnd.Next(0, 24 - flight.DEPARTURE_TIME.Hour), 0, 0));
+            //flight.LANDING_TIME = Statics.GetRandomDate(flight.DEPARTURE_TIME, new DateTime(flight.DEPARTURE_TIME.Year, flight.DEPARTURE_TIME.Month, flight.DEPARTURE_TIME.Day, flight.DEPARTURE_TIME.Hour + _rnd.Next(0, 24 - flight.DEPARTURE_TIME.Hour), 0, 0));
+            flight.LANDING_TIME = Statics.GetRandomDate(flight.DEPARTURE_TIME, flight.DEPARTURE_TIME.AddHours(_rnd.Next(2, 8)).AddMinutes(_rnd.Next(5, 45)));
             flight.REMAINING_TICKETS = _rnd.Next(0, 500);
 
             _currentDAO = CreateAppropriateDAO();
@@ -231,6 +233,8 @@ namespace DataBase_Generator_WPF
         {
             AirlineCompany airline = new AirlineCompany();
             airline.AIRLINE_NAME = _regex.Replace(_airlineCompaniesFromExternalSource[index]["name"], string.Empty);
+            airline.IMAGE = ImageProvider.GetResizedAirlineImageAs64BaseString(4);
+            airline.ADORNING = _airlineCompaniesFromExternalSource[index]["adorning"] + " " + Statics.GetUniqueKeyOriginal_BIASED(_rnd.Next(2, 4), Charset.OnlyNumber);
             string airline_country_name = _regex.Replace(_airlineCompaniesFromExternalSource[index]["country"], string.Empty);
             foreach (var s_country in _countries)
             {

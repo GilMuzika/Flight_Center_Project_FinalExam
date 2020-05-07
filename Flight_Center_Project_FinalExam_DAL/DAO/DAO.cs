@@ -459,6 +459,17 @@ namespace Flight_Center_Project_FinalExam_DAL
             }
             finally { _connection.Close(); }
         }
+        public void DeleteAll()
+        {
+            try
+            {
+                _connection.Open();
+                _command.CommandType = CommandType.Text;
+                _command.CommandText = $"DELETE FROM {this.GetTableName(typeof(T))}";
+                _command.ExecuteNonQuery();
+            }
+            finally { _connection.Close(); }
+        }
         public virtual void DeleteAllNotRegardingForeignKeys()
         {
             try

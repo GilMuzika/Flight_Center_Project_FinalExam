@@ -16,6 +16,30 @@ namespace Flight_Center_Project_FinalExam_BL
         {
             return _flightDAO.GetAll();
         }
+        public List<Flight> GetAllFlightsThatTakeOffInSomeTimeFromNow(TimeSpan someTime)
+        {
+            return _flightDAO.GetAllFlightsThatTakeOffInSomeTimeFromNow(someTime);
+        }
+
+
+
+        /// <summary>
+        /// Builds infrastructure for Get() and GetAll() generic types
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private Dictionary<string, DAO<T>> BuildCorrelationDictionary<T>() where T : class, IPoco, new()
+        {
+            Dictionary<string, DAO<T>> correlation = new Dictionary<string, DAO<T>>();
+            correlation.Add(typeof(Administrator).Name, _administratorDAO as DAO<T>);
+            correlation.Add(typeof(AirlineCompany).Name, _airlineDAO as DAO<T>);
+            correlation.Add(typeof(Country).Name, _countryDAO as DAO<T>);
+            correlation.Add(typeof(Customer).Name, _customerDAO as DAO<T>);
+            correlation.Add(typeof(Flight).Name, _flightDAO as DAO<T>);
+            correlation.Add(typeof(Ticket).Name, _ticketDAO as DAO<T>);
+
+            return correlation;
+        }
 
         /// <summary>
         /// Generic GetAll
@@ -24,15 +48,21 @@ namespace Flight_Center_Project_FinalExam_BL
         /// <returns></returns>
         public List<T> GetAll<T>() where T : class, IPoco, new()
         {
-            Dictionary<string, DAO<T>> correlation = new Dictionary<string, DAO<T>>();            
-            correlation.Add(typeof(Administrator).Name, _administratorDAO as DAO<T>);
-            correlation.Add(typeof(AirlineCompany).Name, _airlineDAO as DAO<T>);
-            correlation.Add(typeof(Country).Name, _countryDAO as DAO<T>);
-            correlation.Add(typeof(Customer).Name, _customerDAO as DAO<T>);
-            correlation.Add(typeof(Flight).Name, _flightDAO as DAO<T>);
-            correlation.Add(typeof(Ticket).Name, _ticketDAO as DAO<T>);
+            Dictionary<string, DAO<T>> correlation = BuildCorrelationDictionary<T>();          
 
             return correlation[typeof(T).Name].GetAll();
+        }
+
+        /// <summary>
+        /// Generic Get
+        /// </summary>
+        /// <typeparam name="T">type argument</typeparam>
+        /// <returns></returns>
+        public T Get<T>(long Id) where T : class, IPoco, new()
+        {
+            Dictionary<string, DAO<T>> correlation = BuildCorrelationDictionary<T>();
+
+            return correlation[typeof(T).Name].Get(Id);
         }
 
         public Dictionary<Flight, int> GetAllFlightsVacancy()

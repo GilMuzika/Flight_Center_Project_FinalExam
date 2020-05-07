@@ -4,8 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Web_Api_interface.Controllers
+namespace Web_Api_interface.MvcControllers
 {
+    [RoutePrefix("mvc")]
     public class HomeController : Controller
     {
         public ActionResult Index()

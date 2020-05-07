@@ -1,0 +1,187 @@
+@{ 
+    Layout = null;
+
+
+    Random _rnd = new Random();
+
+    Flight_Center_Project_FinalExam_BL.AnonimousUserFacade _anonimousUserFacade = new Flight_Center_Project_FinalExam_BL.AnonimousUserFacade();
+
+    List<Flight_Center_Project_FinalExam_DAL.Flight> flights = _anonimousUserFacade.GetAllFlightsThatTakeOffInSomeTimeFromNow(new TimeSpan(12, 0, 0));
+    //List<Flight_Center_Project_FinalExam_DAL.Flight> flights = _anonimousUserFacade.GetAllFlights();
+
+
+
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html" />
+	<meta name="author" content="lolkittens" />
+
+	<title>FlightSetner system</title>
+    <style>
+    body{ 
+        background-color: #73BBEE;
+        background-image: url('/ViewsImages/FlightSystemMain/background.png');
+         }
+    .Box{
+        width: 100%;
+        height: 100px;       
+    }
+    .FlightsTable
+    {
+        width: 80%;
+        alignment-adjust: middle;
+        margin-left:auto;
+        margin-right:auto;
+        color: white;
+        background: #5382a5;
+        padding:2px;
+        border-spacing:20px;
+        text-align: center;
+        border: 1px solid black;
+        border-collapse: collapse;
+        font-family: Arial;        
+        font-size: 12px;
+    }
+    th
+    {
+        background: #004679;
+    }
+    tr#_flightTable
+    {
+
+    background-image: linear-gradient(#5685a6, #326a93);
+    border-bottom: 1px solid #0a4d7e;
+    
+     
+    }    
+    .onTopOfTable
+    {
+     width: 80%;
+     
+     
+          
+     margin-left:auto;
+     margin-right:auto;
+     alignment-adjust: middle;
+     color: white;
+     font-family: Arial;        
+     font-size: 12px;
+     padding: 0px;     
+     background: #004679;
+          
+        
+    }
+    .statusBox
+    {        
+        margin: 5px;
+        padding: 3px;
+        width: 60%;
+    }
+    .upperBox
+    {
+        font-weight: bold;
+    }
+    
+    </style>
+</head>
+
+<body>
+
+<div class="Box">
+
+</div>
+<div class="onTopOfTable">
+<div style="margin: 10px; padding: 10px;">
+    <table class="upperBox" border="0" cellspacing="0" cellpadding="0" style="background: #b3c8d7; padding: 0; margin: 0; border: 0px; border-spacing: 0; border-collapse: collapse; ">
+        <tr>
+            <td><img style="vertical-align: top;" src="~/ViewsImages/FlightSystemMain/upperLeftCorner.gif" width="8"/></td>
+            <td></td>
+            <td><img style="vertical-align: top;" src="~/ViewsImages/FlightSystemMain/upperRightCorner.gif" width="8"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="vertical-align: middle;">@ViewBag.PageKind &nbsp;<img src="~/ViewsImages/FlightSystemMain/departures.gif" /></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><img style="vertical-align: bottom;" src="~/ViewsImages/FlightSystemMain/bottomLeftCorner.gif" width="8"/></td>
+            <td></td>
+            <td><img style="vertical-align: bottom;" src="~/ViewsImages/FlightSystemMain/bottomRightCorner.gif" width="8"/></td>
+        </tr>
+</table>
+</div>
+</div>
+<table class="FlightsTable">
+<tr>
+<th>Flight</th>
+<th></th>
+<th>Departing From</th>
+<th>To</th>
+<th></th>
+<th>Est. Time</th>
+<th>T</th>
+<th>Status</th>
+</tr>
+@foreach (var flight in flights)
+{
+    Flight_Center_Project_FinalExam_DAL.Country departureCountry = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.Country>(flight.ORIGIN_COUNTRY_CODE);
+    Flight_Center_Project_FinalExam_DAL.AirlineCompany airCompany = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.AirlineCompany>(flight.AIRLINECOMPANY_ID);
+    Flight_Center_Project_FinalExam_DAL.Country destinationCountry = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.Country>(flight.DESTINATION_COUNTRY_CODE);
+
+    string imageBase64 = "~/ViewsImages/FlightSystemMain/transparentTerminator.gif";
+    if (airCompany.IMAGE != null && airCompany.IMAGE.Length > 50)
+    {
+        imageBase64 = String.Format("data:image/gif;base64,{0}", airCompany.IMAGE);
+    }
+
+
+<tr id="_flightTable">
+    <td>@airCompany.ADORNING</td>
+    <td>
+        <img src="@imageBase64" width="40" />
+    </td>
+    <td>@departureCountry.COUNTRY_NAME</td>
+    <td>@destinationCountry.COUNTRY_NAME</td>
+    <td>&nbsp;</td>
+    @{ 
+        TimeSpan estimateTime = flight.LANDING_TIME.Subtract(flight.DEPARTURE_TIME);
+
+        string statusMessage = "ON TIME";
+        string statusBoxColor = "#77ca50;";
+        TimeSpan ts = DateTime.Now - flight.LANDING_TIME;
+
+
+        if (_rnd.Next(1, 10) > 8)
+        {
+            statusMessage = "DELAYED";
+            statusBoxColor = "red;";
+
+            int delayingHours = _rnd.Next(0, 4);
+            int delayingMinutes = 0;
+            if (delayingHours == 0) { delayingMinutes = 30; }
+
+            TimeSpan delayingTime = new TimeSpan(delayingHours, delayingMinutes, 0);
+            estimateTime = estimateTime.Add(delayingTime);
+        }
+    }
+<td>@estimateTime</td>
+    @{ 
+        int terminalNum = _rnd.Next(1, 5);
+    }
+    <td>@terminalNum</td>
+    <td>
+        <div style="background-color: @statusBoxColor" class="statusBox">@statusMessage</div>
+    </td>
+</tr>
+}
+
+
+</table>
+
+<div class="Box">
+
+</div>
+</body>
+</html>

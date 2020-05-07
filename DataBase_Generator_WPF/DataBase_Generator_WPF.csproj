@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -154,6 +157,19 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="airlines_locally.dat.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Models\AirlineLogos\1.jpg" />
+    <Resource Include="Models\AirlineLogos\10.jpg" />
+    <Resource Include="Models\AirlineLogos\11.jpg" />
+    <Resource Include="Models\AirlineLogos\2.png" />
+    <Resource Include="Models\AirlineLogos\3.png" />
+    <Resource Include="Models\AirlineLogos\4.png" />
+    <Resource Include="Models\AirlineLogos\5.png" />
+    <Resource Include="Models\AirlineLogos\6.jpg" />
+    <Resource Include="Models\AirlineLogos\7.jpg" />
+    <Resource Include="Models\AirlineLogos\8.jpg" />
+    <Resource Include="Models\AirlineLogos\9.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

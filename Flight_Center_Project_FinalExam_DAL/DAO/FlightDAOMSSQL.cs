@@ -90,6 +90,48 @@ namespace Flight_Center_Project_FinalExam_DAL
             return GetSomethingBySomethingInternal(departureDate, (int)FlightPropertyNumber.DEPARTURE_TIME);
         }
 
+        
+        public List<T> GetAllFlightsThatTakeOffInSomeTimeFromNow(TimeSpan sometime)
+        {
+            try
+            {
+                List<T> toReturn = new List<T>();
+                _connection.Open();
+                _command.CommandType = CommandType.Text;
+                var dt = DateTime.Now;
+                DateTime selectionDateTime = DateTime.Now.Add(sometime);
+                _command.CommandText = $"select * from {GetTableName(typeof(T))} WHERE DEPARTURE_TIME <= '{selectionDateTime}'";
+                using (SqlDataReader reader = _command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        T poco = new T();
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            object value = reader[i];
+                            if (reader[i] is DBNull && typeof(T).GetProperties()[i].GetType().Name.ToLower().Equals("string"))
+                            {
+                                typeof(T).GetProperties()[i].SetValue(poco, string.Empty);
+                            }
+                            if (reader[i] is DBNull && typeof(T).GetProperties()[i].GetType().Name.ToLower().Contains("int"))
+                            {
+                                typeof(T).GetProperties()[i].SetValue(poco, 0);
+                            }
+
+                            if (!(reader[i] is DBNull)) { typeof(T).GetProperties()[i].SetValue(poco, value); }
+
+                        }
+                        toReturn.Add(poco);
+                    }
+                }
+                return toReturn;
+
+            }
+            finally { _connection.Close(); }
+
+
+        }
+
         public Flight getFlightByDestinationCountry(Country destinationCountry)
         {
             return GetSomethingBySomethingInternal(destinationCountry.ID, (int)FlightPropertyNumber.DESTINATION_COUNTRY_CODE);
