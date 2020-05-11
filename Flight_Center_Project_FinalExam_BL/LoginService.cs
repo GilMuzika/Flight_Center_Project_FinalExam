@@ -32,13 +32,15 @@ namespace Flight_Center_Project_FinalExam_BL
                 else s_username = EncryptionProvider.Decryprt(s.USER_NAME);
                 if (userName == s_username)
                 {
-                    isUserExists = true;
+                    //isUserExists = true;
                     string s_password = string.Empty;
                     if (s.PASSWORD.Length < 50) s_password = s.PASSWORD;
                     else s_password = EncryptionProvider.Decryprt(s.PASSWORD);
                     if (password == s_password)
                     {
-                        var actualUser = correlation[s.USER_KIND](s);
+                        //var actualUser = correlation[s.USER_KIND](s);
+                        isUserExists = correlation.TryGetValue(s.USER_KIND, out Func<Utility_class_User, IPoco> funcMethod);
+                        var actualUser = funcMethod(s);
                         loginToken = new LoginToken<T>();
                         loginToken.ActualUser = actualUser as T;
                         loginToken.UserAsUser = s;

@@ -13,7 +13,7 @@ namespace Flight_Center_Project_FinalExam_BL
         private readonly Thread _wakeUpAndSing;
 
 
-        private static object _key = new object();
+        private static readonly object _key = new object();
         private static FlyingCenterSystem Instance;
         /// <summary>
         /// Singleton - private constructor, 

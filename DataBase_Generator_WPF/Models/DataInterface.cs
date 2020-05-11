@@ -178,10 +178,10 @@ namespace DataBase_Generator_WPF
             flight.ORIGIN_COUNTRY_CODE = _countries[_rnd.Next(_countries.Count)].ID;
             flight.DESTINATION_COUNTRY_CODE = _countries[_rnd.Next(_countries.Count)].ID;
             
-            var departureDateTime = Statics.GetRandomDate(DateTime.Now, DateTime.Now.AddHours(Convert.ToDouble(_rnd.Next(5, 18))).AddMinutes(Convert.ToDouble(_rnd.Next(10, 55))));
+            var departureDateTime = Statics.GetRandomDate(DateTime.Now, DateTime.Now.AddHours(Convert.ToDouble(_rnd.Next(1, 3))).AddMinutes(Convert.ToDouble(_rnd.Next(10, 55))));
             flight.DEPARTURE_TIME = departureDateTime;
             //flight.LANDING_TIME = Statics.GetRandomDate(flight.DEPARTURE_TIME, new DateTime(flight.DEPARTURE_TIME.Year, flight.DEPARTURE_TIME.Month, flight.DEPARTURE_TIME.Day, flight.DEPARTURE_TIME.Hour + _rnd.Next(0, 24 - flight.DEPARTURE_TIME.Hour), 0, 0));
-            flight.LANDING_TIME = Statics.GetRandomDate(flight.DEPARTURE_TIME, flight.DEPARTURE_TIME.AddHours(_rnd.Next(2, 8)).AddMinutes(_rnd.Next(5, 45)));
+            flight.LANDING_TIME = Statics.GetRandomDate(flight.DEPARTURE_TIME, flight.DEPARTURE_TIME.AddHours(_rnd.Next(18, 20)).AddMinutes(_rnd.Next(5, 45)));
             flight.REMAINING_TICKETS = _rnd.Next(0, 500);
 
             _currentDAO = CreateAppropriateDAO();

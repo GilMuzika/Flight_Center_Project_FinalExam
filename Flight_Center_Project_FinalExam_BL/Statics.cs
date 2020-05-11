@@ -39,14 +39,14 @@ namespace Flight_Center_Project_FinalExam_BL
         /// <param name="o2">The second compared object</param>
         /// <returns></returns>
         public static bool BulletprofComparsion<T>(T o1, T o2) where T : IPoco
-        {        
+        {
             bool isEqual = true;
-            for(int i = 1; i < typeof(T).GetProperties().Length; i++)
+            for (int i = 1; i < typeof(T).GetProperties().Length; i++)
             {
                 var value1 = typeof(T).GetProperties()[i].GetValue(o1);
                 var value2 = typeof(T).GetProperties()[i].GetValue(o2);
 
-                if (ReferenceEquals(value1, value2))
+                if (!value1.Equals(value2))
                 {
                     isEqual = false;
                     break;
@@ -54,7 +54,7 @@ namespace Flight_Center_Project_FinalExam_BL
             }
             return isEqual;
         }
-            
+
 
     }
 }

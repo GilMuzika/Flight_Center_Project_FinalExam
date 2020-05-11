@@ -231,6 +231,36 @@ namespace Web_Api_interface
         }
 
 
+
+
+
+
+
+
+        /// <summary>
+        /// This method compares a two Poco objects of the same type by all the properties except ID
+        /// </summary>
+        /// <typeparam name="T">type of the objects</typeparam>
+        /// <param name="o1">The first compared object</param>
+        /// <param name="o2">The second compared object</param>
+        /// <returns></returns>
+        public static bool BulletprofComparsion<T>(T o1, T o2) where T : IPoco
+        {
+            bool isEqual = true;
+            for (int i = 1; i < typeof(T).GetProperties().Length; i++)
+            {
+                var value1 = typeof(T).GetProperties()[i].GetValue(o1);
+                var value2 = typeof(T).GetProperties()[i].GetValue(o2);
+
+                if (!value1.Equals(value2))
+                {
+                    isEqual = false;
+                    break;
+                }
+            }
+            return isEqual;
+        }
+
     }
 
 

@@ -12,8 +12,25 @@ namespace Web_Api_interface.MvcControllers
         public ActionResult FlightSystemMainView()
         {
             ViewBag.PageKind = "Departures";
-            //return View("../Views/FlightSystemMain/FlightsSystemMainView.cshtml");
-            return View();
+            ViewBag.PageKindIconSrc = "departures.gif";
+            return View("FlightSystemMainView");
+            //return View();
+        }
+
+        public ActionResult Departures(string str)
+        {
+            ViewBag.Title = "Departures";
+            ViewBag.PageKind = "Departures";
+            ViewBag.PageKindIconSrc = "departures.gif";
+            return View("FlightSystemMainView");
+        }
+
+        public ActionResult Landings(string str)
+        {
+            ViewBag.Title = "Landings";
+            ViewBag.PageKind = "Landings";
+            ViewBag.PageKindIconSrc = "arrivings.gif";
+            return View("FlightSystemMainView");
         }
     }
 }

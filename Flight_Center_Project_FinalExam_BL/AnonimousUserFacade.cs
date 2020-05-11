@@ -16,9 +16,24 @@ namespace Flight_Center_Project_FinalExam_BL
         {
             return _flightDAO.GetAll();
         }
-        public List<Flight> GetAllFlightsThatTakeOffInSomeTimeFromNow(TimeSpan someTime)
+        public List<Flight> GetAllFlightsThatTakeOffInSomeTimeFromNow(TimeSpan someTime, RazorViewStatus status)
         {
-            return _flightDAO.GetAllFlightsThatTakeOffInSomeTimeFromNow(someTime);
+            if (status == RazorViewStatus.Landings)
+            {
+                List<Flight> oveallLandingFlights;
+                List<Flight> willLandFlights;
+
+                //first of all, flights that already landed
+                oveallLandingFlights = _flightDAO.GetAllFlightsThatTakeOffInSomeTimeFromNow(someTime, status, RazorViewStatus.Future);                
+                //second of all, flights tht will land in 4 hours
+                willLandFlights = _flightDAO.GetAllFlightsThatTakeOffInSomeTimeFromNow(new TimeSpan(4, 0, 0), status, RazorViewStatus.Past);                
+
+                oveallLandingFlights.AddRange(willLandFlights);
+
+                return oveallLandingFlights;
+            }
+
+                return _flightDAO.GetAllFlightsThatTakeOffInSomeTimeFromNow(someTime, status, RazorViewStatus.Future);            
         }
 
 
@@ -149,6 +164,7 @@ namespace Flight_Center_Project_FinalExam_BL
             correlation.Add(typeof(Ticket).Name, _ticketDAO as DAO<T>);
             correlation.Add(typeof(Country).Name, _countryDAO as DAO<T>);
             correlation.Add(typeof(Flight).Name, _flightDAO as DAO<T>);
+            correlation.Add(typeof(FailedLoginAttempt).Name, _failedLoginAttemptsDAO as DAO<T>);
 
             var user2 = correlation[user.GetType().Name].Get((long)user.GetType().GetProperty("ID").GetValue(user));
             if (user2.Equals(user)) isExists = true;
