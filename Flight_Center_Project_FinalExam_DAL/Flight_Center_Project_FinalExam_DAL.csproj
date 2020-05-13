@@ -71,12 +71,15 @@
   <ItemGroup>
     <Compile Include="DAO\AdministratorDAOMSSQL.cs" />
     <None Include="DAO\DAO_copy.cs_" />
+    <Compile Include="DAO\FailedLoginAttemptsDAOMSSQL.cs" />
+    <Compile Include="DAO\FlightDAOMSSQL.cs" />
     <Compile Include="DAO\FlightHistoryDAOMSSQL.cs" />
     <Compile Include="DAO\HistoryTrackingDAOMSSQL.cs" />
     <Compile Include="DAO\UserBaseMSSQLDAO.cs" />
     <Compile Include="DAO\Utility_class_UserDAOMSSQL.cs" />
     <Compile Include="DAO\DAO.cs" />
     <Compile Include="EncryptionProvider.cs" />
+    <Compile Include="IDAL\IFailedLoginAttemptsDAOMSSQL.cs" />
     <Compile Include="IDAL\IHistoryTrackingDAO.cs" />
     <Compile Include="IDAL\ISystemUserBase.cs" />
     <Compile Include="IDAL\IUtility_class_UserDAO.cs" />
@@ -102,6 +105,7 @@
     <Compile Include="Pocos\Country.cs" />
     <None Include="Pocos\Customer.cs_back" />
     <Compile Include="Pocos\Customer.cs" />
+    <Compile Include="Pocos\FailedLoginAttempt.cs" />
     <Compile Include="Pocos\Flight.cs" />
     <Compile Include="Pocos\FlightsHistory.cs" />
     <Compile Include="Pocos\HistoryTracking.cs" />
@@ -118,7 +122,6 @@
     <Compile Include="DAO\CustomerDAOMSSQL.cs" />
     <Compile Include="DAO\AirlineDAOMSSQL.cs" />
     <Compile Include="DAO\CountryDAOMSSQL.cs" />
-    <Compile Include="DAO\FlightDAOMSSQL.cs" />
     <Compile Include="DAO\TicketDAOMSSQL.cs" />
   </ItemGroup>
   <ItemGroup>

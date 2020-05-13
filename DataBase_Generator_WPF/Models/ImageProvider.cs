@@ -68,14 +68,14 @@ namespace DataBase_Generator_WPF
             resizedImg.Save(memoryStream, ImageFormat.Jpeg);
             byte[] byteImage = memoryStream.ToArray();
 
-            //this code is only to check converting an image to Base64String and back to Bitmap, and then savong to the disk
+            //this code is only to check converting an image to Base64String and back to Bitmap, and then saving to the disk
             /*
             byteBuffer = Convert.FromBase64String(Convert.ToBase64String(byteImage));
             memoryStream = new MemoryStream(byteBuffer);
             resizedImg.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
             bmpReturn = (Bitmap)Bitmap.FromStream(memoryStream);
             bmpReturn.Save("sampleImage.jpg", ImageFormat.Jpeg);*/
-            //End: this code is only to check converting an image to Base64String and back to Bitmap, and then savong to the disk
+            //End: this code is only to check converting an image to Base64String and back to Bitmap, and then saving to the disk
             
             return Convert.ToBase64String(byteImage);
         }

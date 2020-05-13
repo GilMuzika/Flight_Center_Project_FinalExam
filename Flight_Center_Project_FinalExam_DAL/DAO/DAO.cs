@@ -534,7 +534,7 @@ namespace Flight_Center_Project_FinalExam_DAL
                 {
                     var value = typeof(T).GetProperties()[i].GetValue(poco);
 
-                    if (propInfos[i].GetValue(poco).GetType().Name == "String")
+                    if (propInfos[i].GetValue(poco) is String || propInfos[i].GetValue(poco) is DateTime)
                     {
                         if (value == null) value = String.Empty;
                         else value = $"'{value}'";

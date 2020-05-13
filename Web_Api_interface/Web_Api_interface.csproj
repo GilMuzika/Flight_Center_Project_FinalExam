@@ -191,6 +191,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllers\JwtController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -236,7 +237,6 @@
     <Compile Include="Models\LoginResponseVM.cs" />
     <Compile Include="ApiControllers\JWTAutenticationAuxiliaries\UserValidator.cs" />
     <Compile Include="ApiControllers\JWTAutenticationAuxiliaries\TokenValidationHandler.cs" />
-    <Compile Include="ApiControllers\JwtController.cs" />
     <Compile Include="ApiControllers\TokenAutenticationAuxiliaries\MyAuthorizationServerProvider.cs" />
     <Compile Include="ApiControllers\TokenAutenticationAuxiliaries\Utility_class_UserRepository.cs" />
     <Compile Include="MvcControllers\FlightSystemMainController.cs" />
@@ -251,6 +251,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JsonToDictionaryConverter.cs" />
     <Compile Include="Statics.cs" />
+    <Compile Include="Views\FlightSystemMain\ImageRestorer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AlltheDecryptedNamesAndPasswords.txt" />

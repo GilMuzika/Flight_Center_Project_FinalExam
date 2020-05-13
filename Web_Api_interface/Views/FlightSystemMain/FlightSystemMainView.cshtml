@@ -6,7 +6,13 @@
 
     Flight_Center_Project_FinalExam_BL.AnonimousUserFacade _anonimousUserFacade = new Flight_Center_Project_FinalExam_BL.AnonimousUserFacade();
 
-    List<Flight_Center_Project_FinalExam_DAL.Flight> flights = _anonimousUserFacade.GetAllFlightsThatTakeOffInSomeTimeFromNow(new TimeSpan(12, 0, 0));
+    List<Flight_Center_Project_FinalExam_DAL.Flight> flights = _anonimousUserFacade.GetAllFlightsThatTakeOffInSomeTimeFromNow(new TimeSpan(12, 0, 0), Flight_Center_Project_FinalExam_DAL.RazorViewStatus.Departures);
+
+    if(ViewBag.PageKind == "Landings")
+    {
+        flights = _anonimousUserFacade.GetAllFlightsThatTakeOffInSomeTimeFromNow(new TimeSpan(12, 0, 0), Flight_Center_Project_FinalExam_DAL.RazorViewStatus.Landings).Where(x => x.DEPARTURE_TIME > DateTime.Now).ToList();
+        //flights = _anonimousUserFacade.GetAllFlightsThatTakeOffInSomeTimeFromNow(new TimeSpan(12, 0, 0), Flight_Center_Project_FinalExam_DAL.RazorViewStatus.Landings);
+    }
     //List<Flight_Center_Project_FinalExam_DAL.Flight> flights = _anonimousUserFacade.GetAllFlights();
 
 
@@ -18,7 +24,7 @@
 	<meta http-equiv="content-type" content="text/html" />
 	<meta name="author" content="lolkittens" />
 
-	<title>FlightSetner system</title>
+	<title>@ViewBag.Title</title>
     <style>
     body{ 
         background-color: #73BBEE;
@@ -102,7 +108,7 @@
         </tr>
         <tr>
             <td></td>
-            <td style="vertical-align: middle;">@ViewBag.PageKind &nbsp;<img src="~/ViewsImages/FlightSystemMain/departures.gif" /></td>
+            <td style="vertical-align: middle;">@ViewBag.PageKind &nbsp;<img src="~/ViewsImages/FlightSystemMain/@ViewBag.PageKindIconSrc" /></td>
             <td></td>
         </tr>
         <tr>
@@ -132,8 +138,8 @@
 
     string imageBase64 = "~/ViewsImages/FlightSystemMain/transparentTerminator.gif";
     if (airCompany.IMAGE != null && airCompany.IMAGE.Length > 50)
-    {
-        imageBase64 = String.Format("data:image/gif;base64,{0}", airCompany.IMAGE);
+    {             
+        imageBase64 = Web_Api_interface.Views.FlightSystemMain.ImageRestorer.GetFormattedImage64baseString(airCompany.IMAGE);
     }
 
 
@@ -148,22 +154,60 @@
     @{ 
         TimeSpan estimateTime = flight.LANDING_TIME.Subtract(flight.DEPARTURE_TIME);
 
-        string statusMessage = "ON TIME";
+        string statusMessage = "---------";
         string statusBoxColor = "#77ca50;";
         TimeSpan ts = DateTime.Now - flight.LANDING_TIME;
 
-
-        if (_rnd.Next(1, 10) > 8)
+        if (ViewBag.PageKind == "Departures")
         {
-            statusMessage = "DELAYED";
-            statusBoxColor = "red;";
+            statusMessage = "ON TIME";
 
-            int delayingHours = _rnd.Next(0, 4);
-            int delayingMinutes = 0;
-            if (delayingHours == 0) { delayingMinutes = 30; }
+            if (_rnd.Next(1, 10) > 8)
+            {
+                statusMessage = "DELAYED";
+                statusBoxColor = "red;";
 
-            TimeSpan delayingTime = new TimeSpan(delayingHours, delayingMinutes, 0);
-            estimateTime = estimateTime.Add(delayingTime);
+                int delayingHours = _rnd.Next(0, 4);
+                int delayingMinutes = 0;
+                if (delayingHours == 0) { delayingMinutes = 30; }
+
+                TimeSpan delayingTime = new TimeSpan(delayingHours, delayingMinutes, 0);
+                estimateTime = estimateTime.Add(delayingTime);
+            }
+        }
+
+        if(ViewBag.PageKind == "Landings")
+        {
+            TimeSpan tspn = DateTime.Now.Subtract(flight.LANDING_TIME);
+            TimeSpan minutes15 = new TimeSpan(0, 15, 0);
+            if (DateTime.Now.Subtract(flight.LANDING_TIME) <= new TimeSpan(0, 15, 0) && DateTime.Now.Subtract(flight.LANDING_TIME) >= new TimeSpan(0, 0, 0))
+            { statusMessage = "LANDING"; statusBoxColor = "#f3850e;"; }
+            if (DateTime.Now.Subtract(flight.LANDING_TIME) <= new TimeSpan(0, 0, 0))
+            {
+                statusMessage = "LANDED";
+
+
+            }
+            if (flight.DEPARTURE_TIME < DateTime.Now && flight.LANDING_TIME > DateTime.Now)
+            {
+
+                statusMessage = "NOT FINAL";
+
+
+                if (_rnd.Next(1, 10) == 1 || _rnd.Next(1, 10) <= 2)
+                {
+                    statusMessage = "LANDING"; statusBoxColor = "#f3850e;";
+                    TimeSpan addToEstTime = new TimeSpan(0, _rnd.Next(30, 240), 0);
+                    estimateTime += addToEstTime;
+                }
+
+            }
+            var r = flight.LANDING_TIME.Subtract(DateTime.Now);
+            if (flight.LANDING_TIME.Subtract(DateTime.Now) <= new TimeSpan(2, 0, 0) && flight.LANDING_TIME.Subtract(DateTime.Now) > new TimeSpan(0, 15, 0))
+            { statusMessage = "FINAL"; }
+
+
+
         }
     }
 <td>@estimateTime</td>

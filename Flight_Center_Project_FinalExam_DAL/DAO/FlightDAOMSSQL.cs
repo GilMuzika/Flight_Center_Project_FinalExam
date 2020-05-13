@@ -6,9 +6,20 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 
 namespace Flight_Center_Project_FinalExam_DAL
 {
+    [Flags]
+    public enum RazorViewStatus
+    {
+        Departures = 0,
+        Landings = 1, 
+        Past = 2, 
+        Future = 4
+
+    }
+
     public class FlightDAOMSSQL<T> : DAO<T>, IFlightDAO<T> where T : Flight, IPoco, new()
     {
         public FlightDAOMSSQL(): base() { }
@@ -90,8 +101,14 @@ namespace Flight_Center_Project_FinalExam_DAL
             return GetSomethingBySomethingInternal(departureDate, (int)FlightPropertyNumber.DEPARTURE_TIME);
         }
 
-        
-        public List<T> GetAllFlightsThatTakeOffInSomeTimeFromNow(TimeSpan sometime)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sometime">Time that defines time range of the flights the method returns</param>
+        /// <param name="viewStatus">Defines if flights are for Departures or Arrivals</param>
+        /// <param name="viewTime">Defines if Departures or Arrival was or will be</param>
+        /// <returns></returns>
+        public List<T> GetAllFlightsThatTakeOffInSomeTimeFromNow(TimeSpan sometime, RazorViewStatus viewStatus, RazorViewStatus viewTime)
         {
             try
             {
@@ -100,7 +117,26 @@ namespace Flight_Center_Project_FinalExam_DAL
                 _command.CommandType = CommandType.Text;
                 var dt = DateTime.Now;
                 DateTime selectionDateTime = DateTime.Now.Add(sometime);
-                _command.CommandText = $"select * from {GetTableName(typeof(T))} WHERE DEPARTURE_TIME <= '{selectionDateTime}'";
+
+                //imminentFlightActionTime -> depatrure time or landing time of the flight in question, depending on "viewStatus" parameter of the method
+                string imminentFlightActionTime = "DEPARTURE_TIME";
+                char comparsionSymbol = '<';
+                char comparsionSymbol2 = '>';
+
+
+                if (viewStatus == RazorViewStatus.Landings)
+                {
+                    imminentFlightActionTime = "LANDING_TIME";
+                    if (viewTime == RazorViewStatus.Past)
+                    {
+                        comparsionSymbol = '<';
+                        comparsionSymbol2 = '>';
+                        selectionDateTime = DateTime.Now.Subtract(sometime);
+
+                    }
+                }
+
+                _command.CommandText = $"select * from {GetTableName(typeof(T))} WHERE {imminentFlightActionTime} {comparsionSymbol}= '{selectionDateTime}' AND {imminentFlightActionTime} {comparsionSymbol2}= '{DateTime.Now}'";
                 using (SqlDataReader reader = _command.ExecuteReader())
                 {
                     while (reader.Read())

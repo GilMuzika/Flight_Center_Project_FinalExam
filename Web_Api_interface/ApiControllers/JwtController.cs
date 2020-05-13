@@ -1,4 +1,5 @@
-﻿using Flight_Center_Project_FinalExam_DAL;
+﻿using Flight_Center_Project_FinalExam_BL;
+using Flight_Center_Project_FinalExam_DAL;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using System;
@@ -78,7 +79,57 @@ namespace Web_Api_interface.Controllers
             bool isUsernamePasswordValid = _userValidator.ValidateUser(username, password, out Utility_class_User validatedUserModel);
 
             //if credentials are invalid
-            if (!isUsernamePasswordValid) return Unauthorized();
+            if (!isUsernamePasswordValid)
+            {
+                FailedAttemptsFacade failedFacade = FlyingCenterSystem.GetInstance().getFacede<FailedAttemptsFacade>();
+
+                FailedLoginAttempt attemptByPassword = failedFacade.GetByPassword(password);
+                FailedLoginAttempt attempByUsername = failedFacade.GetByUserName(username);
+                bool attemptsComparsion = Statics.BulletprofComparsion(attemptByPassword, attempByUsername);                
+                if(!attemptsComparsion) return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Your username or password is incorrect, also there is no consistency between them! Acsess denied."));
+
+                long failedAttemptNum = 0;
+                long failedAttemptNumToDisplay = 1;
+
+                bool isTheAttemptIsFirts = attemptByPassword.Equals(new FailedLoginAttempt());
+
+                if(isTheAttemptIsFirts)
+                {
+                    failedFacade.AddBlackUser(new FailedLoginAttempt(username, password, 2, DateTime.Now));
+                }
+                else
+                {
+                    //long.TryParse(ConfigurationManager.AppSettings["Permitted_Login_Attempts_Num"], out long permittedLOginAttempts);
+                    if(attemptByPassword.FAILED_ATTEMPTS_NUM <= 3)
+                    {
+                        failedAttemptNum = attemptByPassword.FAILED_ATTEMPTS_NUM;
+                        failedAttemptNumToDisplay = failedAttemptNum;
+                        failedAttemptNum++;                        
+                        attemptByPassword.FAILED_ATTEMPTS_NUM = failedAttemptNum;
+                        bool isUpdated = failedFacade.UpdateBlackUser(attemptByPassword);
+                    }
+                    else
+                    {                        
+                        if (DateTime.Now.AddDays(-1) < attemptByPassword.FAILURE_TIME) 
+                        {
+                            TimeSpan timeRemainder = new TimeSpan(24, 0, 0) - DateTime.Now.Subtract(attemptByPassword.FAILURE_TIME);
+                            return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, $"Sorry, but the system didn't regocnyzed you as registered user. Your accsess is denied. You're had tried to aouthorize more tham 3 times. Wait {timeRemainder.Hours} hours and {timeRemainder.Minutes} minutes until new attempt!"));
+                        }
+                        else
+                        {
+                            failedAttemptNum = 1;                            
+                            attemptByPassword.FAILED_ATTEMPTS_NUM = failedAttemptNum;
+                            attemptByPassword.FAILURE_TIME = DateTime.Now;
+                            bool updated = failedFacade.UpdateBlackUser(attemptByPassword);
+                        }
+                        
+                    }
+                }
+
+
+
+                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, $"Sorry, but the system didn't regocnyzed you as registered user. Your accsess is denied. You're had tried to aouthorize {failedAttemptNumToDisplay} times."));
+            }
             //if credentials are valid
             if (isUsernamePasswordValid)
             {
