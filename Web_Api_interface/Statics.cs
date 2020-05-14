@@ -246,7 +246,11 @@ namespace Web_Api_interface
         /// <returns></returns>
         public static bool BulletprofComparsion<T>(T o1, T o2) where T : IPoco
         {
+            // HI
+            // CALL ME
+
             bool isEqual = true;
+            //לבדוק את שם הפרופרטי ID
             for (int i = 1; i < typeof(T).GetProperties().Length; i++)
             {
                 var value1 = typeof(T).GetProperties()[i].GetValue(o1);

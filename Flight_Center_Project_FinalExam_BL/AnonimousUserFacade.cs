@@ -151,8 +151,11 @@ namespace Flight_Center_Project_FinalExam_BL
             correlation.Add(typeof(Customer).Name, _customerDAO as UserBaseMSSQLDAO<T>);
             correlation.Add(typeof(Administrator).Name, _administratorDAO as UserBaseMSSQLDAO<T>);
 
-            var user2 = correlation[user.GetType().Name].Get((long)user.GetType().GetProperty("ID").GetValue(user));
+
+            //var users2Lst = correlation[user.GetType().Name].GetAll();
+            var user2 = correlation[user.GetType().Name].Get((long)user.GetType().GetProperty("ID").GetValue(user));           
             if (user2.Equals(user)) isExists = true;
+            //isExists = Statics.BulletprofComparsion(user, user2);
 
             return isExists;
         }

@@ -32,5 +32,10 @@ namespace Web_Api_interface.MvcControllers
             ViewBag.PageKindIconSrc = "arrivings.gif";
             return View("FlightSystemMainView");
         }
+
+        public ActionResult WebClientSideJobDoer_test()
+        {
+            return View();
+        }
     }
 }
