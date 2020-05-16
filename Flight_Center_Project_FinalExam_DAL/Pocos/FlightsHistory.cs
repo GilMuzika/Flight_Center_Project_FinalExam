@@ -11,10 +11,11 @@ namespace Flight_Center_Project_FinalExam_DAL
            DESTINATION_COUNTRY_CODE = 3,
            DEPARTURE_TIME = 4,
            LANDING_TIME = 5,
-           REMAINING_TICKETS = 6
+           IDENTIFIER = 6,
+           REMAINING_TICKETS = 7
   }
 
-  public class FlightsHistory :PocoBase, IPoco
+  public class FlightsHistory : IDisposable, IPoco
    {
        public Int64 ID { get; set; }
        public Int64 AIRLINECOMPANY_ID { get; set; }
@@ -22,16 +23,18 @@ namespace Flight_Center_Project_FinalExam_DAL
        public Int64 DESTINATION_COUNTRY_CODE { get; set; }
        public DateTime DEPARTURE_TIME { get; set; }
        public DateTime LANDING_TIME { get; set; }
+       public String IDENTIFIER { get; set; }
        public Int32 REMAINING_TICKETS { get; set; }
 
 
-       public FlightsHistory( Int64 aIRLINECOMPANY_ID, Int64 oRIGIN_COUNTRY_CODE, Int64 dESTINATION_COUNTRY_CODE, DateTime dEPARTURE_TIME, DateTime lANDING_TIME, Int32 rEMAINING_TICKETS)
+       public FlightsHistory( Int64 aIRLINECOMPANY_ID, Int64 oRIGIN_COUNTRY_CODE, Int64 dESTINATION_COUNTRY_CODE, DateTime dEPARTURE_TIME, DateTime lANDING_TIME, String iDENTIFIER, Int32 rEMAINING_TICKETS)
        {
            AIRLINECOMPANY_ID = aIRLINECOMPANY_ID;
            ORIGIN_COUNTRY_CODE = oRIGIN_COUNTRY_CODE;
            DESTINATION_COUNTRY_CODE = dESTINATION_COUNTRY_CODE;
            DEPARTURE_TIME = dEPARTURE_TIME;
            LANDING_TIME = lANDING_TIME;
+           IDENTIFIER = iDENTIFIER;
            REMAINING_TICKETS = rEMAINING_TICKETS;
        }
        public FlightsHistory()
@@ -41,6 +44,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            DESTINATION_COUNTRY_CODE = -9999;
            DEPARTURE_TIME = DateTime.MinValue;
            LANDING_TIME = DateTime.MinValue;
+           IDENTIFIER = "-=DEFAULT_STRING=-";
            REMAINING_TICKETS = -9999;
        }
 
@@ -77,5 +81,9 @@ namespace Flight_Center_Project_FinalExam_DAL
 
             return str;
         }
+
+
+       public void Dispose() { }
+
    }
 }

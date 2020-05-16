@@ -11,7 +11,7 @@
     if(ViewBag.PageKind == "Landings")
     {
         flights = _anonimousUserFacade.GetAllFlightsThatTakeOffInSomeTimeFromNow(new TimeSpan(12, 0, 0), Flight_Center_Project_FinalExam_DAL.RazorViewStatus.Landings).Where(x => x.DEPARTURE_TIME > DateTime.Now).ToList();
-        //flights = _anonimousUserFacade.GetAllFlightsThatTakeOffInSomeTimeFromNow(new TimeSpan(12, 0, 0), Flight_Center_Project_FinalExam_DAL.RazorViewStatus.Landings);
+        //flights = _anonimousUserFacade.GetAllFlights();
     }
     //List<Flight_Center_Project_FinalExam_DAL.Flight> flights = _anonimousUserFacade.GetAllFlights();
 

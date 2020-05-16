@@ -3,28 +3,32 @@ using System;
 namespace Flight_Center_Project_FinalExam_DAL
 {
 
-  enum AdministratorPropertyNumber
+  public enum AdministratorPropertyNumber
   {
            ID = 0,
            NAME = 1,
-           USER_ID = 2
+           IDENTIFIER = 2,
+           USER_ID = 3
   }
 
-  public class Administrator : PocoBase, IPoco
+  public class Administrator : IDisposable, IPoco
    {
        public Int64 ID { get; set; }
        public String NAME { get; set; }
+       public String IDENTIFIER { get; set; }
        public Int64 USER_ID { get; set; }
 
 
-       public Administrator( String nAME, Int64 uSER_ID)
+       public Administrator( String nAME, String iDENTIFIER, Int64 uSER_ID)
        {
            NAME = nAME;
+           IDENTIFIER = iDENTIFIER;
            USER_ID = uSER_ID;
        }
        public Administrator()
        {
            NAME = "-=DEFAULT_STRING=-";
+           IDENTIFIER = "-=DEFAULT_STRING=-";
            USER_ID = -9999;
        }
 
@@ -61,5 +65,9 @@ namespace Flight_Center_Project_FinalExam_DAL
 
             return str;
         }
+
+
+       public void Dispose() { }
+
    }
 }

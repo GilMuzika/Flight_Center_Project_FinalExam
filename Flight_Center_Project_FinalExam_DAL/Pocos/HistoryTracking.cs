@@ -8,7 +8,8 @@ namespace Flight_Center_Project_FinalExam_DAL
            ID = 0,
            HISTORY_ENTRY_TIME = 1,
            HISTORY_ENTRY_KIND = 2,
-           HISTORY_ENTRY_ID = 3
+           IDENTIFIER = 3,
+           HISTORY_ENTRY_ID = 4
   }
 
   public class HistoryTracking : IDisposable, IPoco
@@ -16,19 +17,22 @@ namespace Flight_Center_Project_FinalExam_DAL
        public Int64 ID { get; set; }
        public DateTime HISTORY_ENTRY_TIME { get; set; }
        public String HISTORY_ENTRY_KIND { get; set; }
+       public String IDENTIFIER { get; set; }
        public Int64 HISTORY_ENTRY_ID { get; set; }
 
 
-       public HistoryTracking( DateTime hISTORY_ENTRY_TIME, String hISTORY_ENTRY_KIND, Int64 hISTORY_ENTRY_ID)
+       public HistoryTracking( DateTime hISTORY_ENTRY_TIME, String hISTORY_ENTRY_KIND, String iDENTIFIER, Int64 hISTORY_ENTRY_ID)
        {
            HISTORY_ENTRY_TIME = hISTORY_ENTRY_TIME;
            HISTORY_ENTRY_KIND = hISTORY_ENTRY_KIND;
+           IDENTIFIER = iDENTIFIER;
            HISTORY_ENTRY_ID = hISTORY_ENTRY_ID;
        }
        public HistoryTracking()
        {
            HISTORY_ENTRY_TIME = DateTime.MinValue;
            HISTORY_ENTRY_KIND = "-=DEFAULT_STRING=-";
+           IDENTIFIER = "-=DEFAULT_STRING=-";
            HISTORY_ENTRY_ID = -9999;
        }
 

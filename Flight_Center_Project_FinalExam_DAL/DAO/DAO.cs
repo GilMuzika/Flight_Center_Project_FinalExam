@@ -161,10 +161,7 @@ namespace Flight_Center_Project_FinalExam_DAL
                 {
                     while (reader.Read())
                     {
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            typeof(T).GetProperties()[i].SetValue(something, reader.GetValue(i));
-                        }
+                        something = ReadFromDbAndFillPoco(reader);
                     }
                 }
                 return something;
@@ -319,6 +316,32 @@ namespace Flight_Center_Project_FinalExam_DAL
             
         }
 
+        /// <summary>
+        /// This function is reading from tha DataBase and returns one poco object
+        /// </summary>
+        /// <param name="reader">Initialized SqlDataReader</param>
+        /// <returns></returns>
+        private T ReadFromDbAndFillPoco(SqlDataReader reader)
+        {
+                    T poco = new T();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        object value = reader.GetValue(i);
+                        if (reader[i] is DBNull && typeof(T).GetProperties()[i].GetType().Name.ToLower().Equals("string"))
+                        {
+                            typeof(T).GetProperties()[i].SetValue(poco, string.Empty);
+                        }
+                        if (reader[i] is DBNull && typeof(T).GetProperties()[i].GetType().Name.ToLower().Contains("int"))
+                        {
+                            typeof(T).GetProperties()[i].SetValue(poco, 0);
+                        }
+
+                        if (!(reader[i] is DBNull)) { typeof(T).GetProperties()[i].SetValue(poco, value); }
+
+                    }                  
+            return poco;
+        }
+
         #endregion
 
         #region Public service methods 
@@ -339,23 +362,7 @@ namespace Flight_Center_Project_FinalExam_DAL
                 {
                     while (reader.Read())
                     {
-                        T poco = new T();
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            object value = reader[i];
-                            if (reader[i] is DBNull && typeof(T).GetProperties()[i].GetType().Name.ToLower().Equals("string"))
-                            {
-                                typeof(T).GetProperties()[i].SetValue(poco, string.Empty);
-                            }
-                            if (reader[i] is DBNull && typeof(T).GetProperties()[i].GetType().Name.ToLower().Contains("int"))
-                            {
-                                typeof(T).GetProperties()[i].SetValue(poco, 0);
-                            }
-
-                            if (!(reader[i] is DBNull)) { typeof(T).GetProperties()[i].SetValue(poco, value); }
-
-                        }
-                        toReturn.Add(poco);
+                        toReturn.Add(ReadFromDbAndFillPoco(reader));
                     }
                 }
                 return toReturn;
@@ -373,6 +380,13 @@ namespace Flight_Center_Project_FinalExam_DAL
         /// <returns></returns>
         public virtual long Add(T poco)
         {
+            //adding an identifier if the poco object doesen't have one
+            var currentIdentifier = typeof(T).GetProperty("IDENTIFIER").GetValue(poco);
+            var absentIdentifier = typeof(T).GetProperty("IDENTIFIER").GetValue(new T());
+            if(currentIdentifier.Equals(absentIdentifier))                           
+                typeof(T).GetProperty("IDENTIFIER").SetValue(poco, Guid.NewGuid().ToString());
+            //End: adding an identifier if the poco object doesen't have one
+
             _connection.Open();
             string tableName = GetTableName(typeof(T));
             long IDvalue = -1;

@@ -3,7 +3,7 @@ using System;
 namespace Flight_Center_Project_FinalExam_DAL
 {
 
-  enum Utility_class_UserPropertyNumber
+  public enum Utility_class_UserPropertyNumber
   {
            ID = 0,
            USER_NAME = 1,
@@ -11,11 +11,12 @@ namespace Flight_Center_Project_FinalExam_DAL
            USER_KIND = 3,
            AIRLINE_ID = 4,
            CUSTOMER_ID = 5,
-           ADMINISTRATOR_ID = 6
+           ADMINISTRATOR_ID = 6,
+           IDENTIFIER = 7
   }
 
-  public class Utility_class_User : PocoBase, IPoco, IDisposable
-    {
+  public class Utility_class_User : IDisposable, IPoco
+   {
        public Int64 ID { get; set; }
        public String USER_NAME { get; set; }
        public String PASSWORD { get; set; }
@@ -23,9 +24,10 @@ namespace Flight_Center_Project_FinalExam_DAL
        public Int64 AIRLINE_ID { get; set; }
        public Int64 CUSTOMER_ID { get; set; }
        public Int64 ADMINISTRATOR_ID { get; set; }
+       public String IDENTIFIER { get; set; }
 
 
-       public Utility_class_User( String uSER_NAME, String pASSWORD, String uSER_KIND, Int64 aIRLINE_ID, Int64 cUSTOMER_ID, Int64 aDMINISTRATOR_ID)
+       public Utility_class_User( String uSER_NAME, String pASSWORD, String uSER_KIND, Int64 aIRLINE_ID, Int64 cUSTOMER_ID, Int64 aDMINISTRATOR_ID, String iDENTIFIER)
        {
            USER_NAME = uSER_NAME;
            PASSWORD = pASSWORD;
@@ -33,6 +35,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            AIRLINE_ID = aIRLINE_ID;
            CUSTOMER_ID = cUSTOMER_ID;
            ADMINISTRATOR_ID = aDMINISTRATOR_ID;
+           IDENTIFIER = iDENTIFIER;
        }
        public Utility_class_User()
        {
@@ -42,6 +45,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            AIRLINE_ID = -9999;
            CUSTOMER_ID = -9999;
            ADMINISTRATOR_ID = -9999;
+           IDENTIFIER = "-=DEFAULT_STRING=-";
        }
 
 
@@ -78,8 +82,8 @@ namespace Flight_Center_Project_FinalExam_DAL
             return str;
         }
 
-        public void Dispose() { }
 
-        
-    }
+       public void Dispose() { }
+
+   }
 }

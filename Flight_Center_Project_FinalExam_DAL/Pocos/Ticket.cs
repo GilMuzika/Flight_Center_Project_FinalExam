@@ -7,24 +7,28 @@ namespace Flight_Center_Project_FinalExam_DAL
   {
            ID = 0,
            FLIGHT_ID = 1,
-           CUSTOMER_ID = 2
+           IDENTIFIER = 2,
+           CUSTOMER_ID = 3
   }
 
-  public class Ticket : PocoBase, IPoco
+  public class Ticket : IDisposable, IPoco
    {
        public Int64 ID { get; set; }
        public Int64 FLIGHT_ID { get; set; }
+       public String IDENTIFIER { get; set; }
        public Int64 CUSTOMER_ID { get; set; }
 
 
-       public Ticket( Int64 fLIGHT_ID, Int64 cUSTOMER_ID)
+       public Ticket( Int64 fLIGHT_ID, String iDENTIFIER, Int64 cUSTOMER_ID)
        {
            FLIGHT_ID = fLIGHT_ID;
+           IDENTIFIER = iDENTIFIER;
            CUSTOMER_ID = cUSTOMER_ID;
        }
        public Ticket()
        {
            FLIGHT_ID = -9999;
+           IDENTIFIER = "-=DEFAULT_STRING=-";
            CUSTOMER_ID = -9999;
        }
 
@@ -61,5 +65,9 @@ namespace Flight_Center_Project_FinalExam_DAL
 
             return str;
         }
+
+
+       public void Dispose() { }
+
    }
 }

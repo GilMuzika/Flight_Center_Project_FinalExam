@@ -9,7 +9,8 @@ namespace Flight_Center_Project_FinalExam_DAL
            FAILED_USERNAME = 1,
            FAILED_PASSWORD = 2,
            FAILED_ATTEMPTS_NUM = 3,
-           FAILURE_TIME = 4
+           IDENTIFIER = 4,
+           FAILURE_TIME = 5
   }
 
   public class FailedLoginAttempt : IDisposable, IPoco
@@ -18,14 +19,16 @@ namespace Flight_Center_Project_FinalExam_DAL
        public String FAILED_USERNAME { get; set; }
        public String FAILED_PASSWORD { get; set; }
        public Int64 FAILED_ATTEMPTS_NUM { get; set; }
+       public String IDENTIFIER { get; set; }
        public DateTime FAILURE_TIME { get; set; }
 
 
-       public FailedLoginAttempt( String fAILED_USERNAME, String fAILED_PASSWORD, Int64 fAILED_ATTEMPTS_NUM, DateTime fAILURE_TIME)
+       public FailedLoginAttempt( String fAILED_USERNAME, String fAILED_PASSWORD, Int64 fAILED_ATTEMPTS_NUM, String iDENTIFIER, DateTime fAILURE_TIME)
        {
            FAILED_USERNAME = fAILED_USERNAME;
            FAILED_PASSWORD = fAILED_PASSWORD;
            FAILED_ATTEMPTS_NUM = fAILED_ATTEMPTS_NUM;
+           IDENTIFIER = iDENTIFIER;
            FAILURE_TIME = fAILURE_TIME;
        }
        public FailedLoginAttempt()
@@ -33,6 +36,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            FAILED_USERNAME = "-=DEFAULT_STRING=-";
            FAILED_PASSWORD = "-=DEFAULT_STRING=-";
            FAILED_ATTEMPTS_NUM = -9999;
+           IDENTIFIER = "-=DEFAULT_STRING=-";
            FAILURE_TIME = DateTime.MinValue;
        }
 

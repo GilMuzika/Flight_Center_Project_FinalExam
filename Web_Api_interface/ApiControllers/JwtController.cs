@@ -95,7 +95,7 @@ namespace Web_Api_interface.Controllers
 
                 if(isTheAttemptIsFirts)
                 {
-                    failedFacade.AddBlackUser(new FailedLoginAttempt(username, password, 2, DateTime.Now));
+                    failedFacade.AddBlackUser(new FailedLoginAttempt(username, password, 2, Guid.NewGuid().ToString(), DateTime.Now));
                 }
                 else
                 {

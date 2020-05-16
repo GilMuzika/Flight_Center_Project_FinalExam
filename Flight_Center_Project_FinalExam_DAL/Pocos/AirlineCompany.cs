@@ -9,8 +9,9 @@ namespace Flight_Center_Project_FinalExam_DAL
            AIRLINE_NAME = 1,
            COUNTRY_CODE = 2,
            IMAGE = 3,
-           ADORNING = 4,
-           USER_ID = 5
+           IDENTIFIER = 4,
+           ADORNING = 5,
+           USER_ID = 6
   }
 
   public class AirlineCompany : IDisposable, IPoco
@@ -19,15 +20,17 @@ namespace Flight_Center_Project_FinalExam_DAL
        public String AIRLINE_NAME { get; set; }
        public Int64 COUNTRY_CODE { get; set; }
        public String IMAGE { get; set; }
+       public String IDENTIFIER { get; set; }
        public String ADORNING { get; set; }
        public Int64 USER_ID { get; set; }
 
 
-       public AirlineCompany( String aIRLINE_NAME, Int64 cOUNTRY_CODE, String iMAGE, String aDORNING, Int64 uSER_ID)
+       public AirlineCompany( String aIRLINE_NAME, Int64 cOUNTRY_CODE, String iMAGE, String iDENTIFIER, String aDORNING, Int64 uSER_ID)
        {
            AIRLINE_NAME = aIRLINE_NAME;
            COUNTRY_CODE = cOUNTRY_CODE;
            IMAGE = iMAGE;
+           IDENTIFIER = iDENTIFIER;
            ADORNING = aDORNING;
            USER_ID = uSER_ID;
        }
@@ -36,6 +39,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            AIRLINE_NAME = "-=DEFAULT_STRING=-";
            COUNTRY_CODE = -9999;
            IMAGE = "-=DEFAULT_STRING=-";
+           IDENTIFIER = "-=DEFAULT_STRING=-";
            ADORNING = "-=DEFAULT_STRING=-";
            USER_ID = -9999;
        }

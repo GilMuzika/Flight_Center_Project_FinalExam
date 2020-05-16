@@ -103,7 +103,6 @@
     <Compile Include="Pocos\Administrator.cs" />
     <Compile Include="Pocos\AirlineCompany.cs" />
     <Compile Include="Pocos\Country.cs" />
-    <None Include="Pocos\Customer.cs_back" />
     <Compile Include="Pocos\Customer.cs" />
     <Compile Include="Pocos\FailedLoginAttempt.cs" />
     <Compile Include="Pocos\Flight.cs" />

@@ -12,7 +12,8 @@ namespace Flight_Center_Project_FinalExam_DAL
            PHONE_NO = 4,
            CREDIT_CARD_NUMBER = 5,
            IMAGE = 6,
-           USER_ID = 7
+           IDENTIFIER = 7,
+           USER_ID = 8
   }
 
   public class Customer : IDisposable, IPoco
@@ -24,10 +25,11 @@ namespace Flight_Center_Project_FinalExam_DAL
        public String PHONE_NO { get; set; }
        public String CREDIT_CARD_NUMBER { get; set; }
        public String IMAGE { get; set; }
+       public String IDENTIFIER { get; set; }
        public Int64 USER_ID { get; set; }
 
 
-       public Customer( String fIRST_NAME, String lAST_NAME, String aDDRESS, String pHONE_NO, String cREDIT_CARD_NUMBER, String iMAGE, Int64 uSER_ID)
+       public Customer( String fIRST_NAME, String lAST_NAME, String aDDRESS, String pHONE_NO, String cREDIT_CARD_NUMBER, String iMAGE, String iDENTIFIER, Int64 uSER_ID)
        {
            FIRST_NAME = fIRST_NAME;
            LAST_NAME = lAST_NAME;
@@ -35,6 +37,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            PHONE_NO = pHONE_NO;
            CREDIT_CARD_NUMBER = cREDIT_CARD_NUMBER;
            IMAGE = iMAGE;
+           IDENTIFIER = iDENTIFIER;
            USER_ID = uSER_ID;
        }
        public Customer()
@@ -45,6 +48,7 @@ namespace Flight_Center_Project_FinalExam_DAL
            PHONE_NO = "-=DEFAULT_STRING=-";
            CREDIT_CARD_NUMBER = "-=DEFAULT_STRING=-";
            IMAGE = "-=DEFAULT_STRING=-";
+           IDENTIFIER = "-=DEFAULT_STRING=-";
            USER_ID = -9999;
        }
 

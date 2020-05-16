@@ -153,9 +153,27 @@ namespace Flight_Center_Project_FinalExam_BL
 
 
             //var users2Lst = correlation[user.GetType().Name].GetAll();
-            var user2 = correlation[user.GetType().Name].Get((long)user.GetType().GetProperty("ID").GetValue(user));           
-            if (user2.Equals(user)) isExists = true;
-            //isExists = Statics.BulletprofComparsion(user, user2);
+            T user2 = null;
+            long currentUserId = (long)user.GetType().GetProperty("ID").GetValue(user);
+            long absentUserId = (long)user.GetType().GetProperty("ID").GetValue(new T());
+            if (!currentUserId.Equals(absentUserId))
+                user2 = correlation[user.GetType().Name].Get((long)user.GetType().GetProperty("ID").GetValue(user));
+            else
+            {
+                int identifierPlaceNumber = -1;
+                for(int i = 0; i < typeof(T).GetProperties().Length; i++)
+                {
+                    if (typeof(T).GetProperties()[i].Name == "IDENTIFIER")
+                    {
+                        identifierPlaceNumber = i;
+                        break;
+                    }
+                }
+                string identifier = (string)user.GetType().GetProperty("IDENTIFIER").GetValue(user);
+                user2 = correlation[user.GetType().Name].GetSomethingBySomethingInternal(identifier, identifierPlaceNumber);
+            }
+            //if (user2.Equals(user)) isExists = true;
+            isExists = Statics.BulletprofComparsion(user, user2);
 
             return isExists;
         }

@@ -7,25 +7,25 @@ namespace Flight_Center_Project_FinalExam_DAL
   {
            ID = 0,
            COUNTRY_NAME = 1,
-           COUNTRY_IDENTIFIER = 2
+           IDENTIFIER = 2
   }
 
-  public class Country : PocoBase, IPoco
+  public class Country : IDisposable, IPoco
    {
        public Int64 ID { get; set; }
        public String COUNTRY_NAME { get; set; }
-       public Int64 COUNTRY_IDENTIFIER { get; set; }
+       public String IDENTIFIER { get; set; }
 
 
-       public Country( String cOUNTRY_NAME, Int64 cOUNTRY_IDENTIFIER)
+       public Country( String cOUNTRY_NAME, String iDENTIFIER)
        {
            COUNTRY_NAME = cOUNTRY_NAME;
-           COUNTRY_IDENTIFIER = cOUNTRY_IDENTIFIER;
+           IDENTIFIER = iDENTIFIER;
        }
        public Country()
        {
            COUNTRY_NAME = "-=DEFAULT_STRING=-";
-           COUNTRY_IDENTIFIER = -9999;
+           IDENTIFIER = "-=DEFAULT_STRING=-";
        }
 
 
@@ -61,5 +61,9 @@ namespace Flight_Center_Project_FinalExam_DAL
 
             return str;
         }
+
+
+       public void Dispose() { }
+
    }
 }

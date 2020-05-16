@@ -212,7 +212,7 @@ namespace DataBase_Generator_WPF
             {                
                 Country country = new Country();
                 country.COUNTRY_NAME = _regex.Replace(s_country_name, string.Empty);                               
-                country.COUNTRY_IDENTIFIER = Convert.ToInt64(Statics.GetUniqueKeyOriginal_BIASED(_rnd.Next(4, 9), Charset.OnlyNumber));
+                //country.COUNTRY_IDENTIFIER = Convert.ToInt64(Statics.GetUniqueKeyOriginal_BIASED(_rnd.Next(4, 9), Charset.OnlyNumber));
                 _currentDAO.Add(country as T);
             }
             
