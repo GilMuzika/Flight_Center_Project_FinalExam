@@ -24,9 +24,9 @@ namespace Flight_Center_Project_FinalExam_UnitTest
             string userName = "DnblgVP";
             string passWord = "VF7jJv";
             LoginToken<Customer> loginTokenExpected = new LoginToken<Customer>();
-            loginTokenExpected.ActualUser = new Customer("S2r80C0X", "RzjDZy", "Ls0RDh", "K57xv2", "ZQna3uR", base64stringImage, 98);
+            loginTokenExpected.ActualUser = new Customer("S2r80C0X", "RzjDZy", "Ls0RDh", "K57xv2", "ZQna3uR", base64stringImage, Guid.NewGuid().ToString(),  98);
             loginTokenExpected.ActualUser.ID = 10108;            
-            loginTokenExpected.UserAsUser = new Utility_class_User(userName, passWord, "Customer", -9999, 0, -9999);
+            loginTokenExpected.UserAsUser = new Utility_class_User(userName, passWord, "Customer", -9999, 0, -9999, Guid.NewGuid().ToString());
             loginTokenExpected.UserAsUser.ID = 98;
 
 
@@ -38,6 +38,7 @@ namespace Flight_Center_Project_FinalExam_UnitTest
             Assert.AreEqual(loginTokenExpected.ActualUser, loginTokenActual.ActualUser);
             //Assert.AreEqual(airline1 == airline2, true);
 
+            
         }
 
 

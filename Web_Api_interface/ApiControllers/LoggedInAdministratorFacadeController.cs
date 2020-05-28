@@ -183,7 +183,7 @@ namespace Web_Api_interface.Controllers
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, $"The customer number {customer.ID} has been created sucsessfully."));
         }
 
-        [Route("UpdateCustomerDetails", Name = "UpdateCustomerDetails")]
+        [Route("UpdateCustomerDetails", Name = "UpdateCustomerDetails")]        
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public IHttpActionResult UpdateCustomerDetails([FromBody]Customer customer)

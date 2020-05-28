@@ -41,7 +41,7 @@ namespace Flight_Center_Project_FinalExam_BL
 
                 foreach(var s_Flight in _currentFlightDAO.GetAll())
                 {
-                    if(s_Flight.LANDING_TIME.Hour - DateTime.Now.Hour > 3)
+                    if(s_Flight.LANDING_TIME.Hour - DateTime.Now.Hour > 4)
                     {
                         FlightsHistory historyItemFlight = new FlightsHistory();
                         for(int i = 0; i < s_Flight.GetType().GetProperties().Length; i++)

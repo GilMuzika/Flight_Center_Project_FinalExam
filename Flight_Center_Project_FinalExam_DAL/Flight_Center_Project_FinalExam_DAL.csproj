@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -70,14 +71,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\AdministratorDAOMSSQL.cs" />
-    <None Include="DAO\DAO_copy.cs_" />
+    <None Include="DAO\attributes\DBTableNameAttribute.cs_back" />
+    <Compile Include="DAO\DAO.cs" />
+    <Compile Include="DAO\DaoBase.cs" />
     <Compile Include="DAO\FailedLoginAttemptsDAOMSSQL.cs" />
     <Compile Include="DAO\FlightDAOMSSQL.cs" />
     <Compile Include="DAO\FlightHistoryDAOMSSQL.cs" />
     <Compile Include="DAO\HistoryTrackingDAOMSSQL.cs" />
     <Compile Include="DAO\UserBaseMSSQLDAO.cs" />
     <Compile Include="DAO\Utility_class_UserDAOMSSQL.cs" />
-    <Compile Include="DAO\DAO.cs" />
+    <None Include="DAO\DAO_old.cs_back" />
     <Compile Include="EncryptionProvider.cs" />
     <Compile Include="IDAL\IFailedLoginAttemptsDAOMSSQL.cs" />
     <Compile Include="IDAL\IHistoryTrackingDAO.cs" />
@@ -126,5 +129,6 @@
   <ItemGroup>
     <None Include="DAL_app.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
