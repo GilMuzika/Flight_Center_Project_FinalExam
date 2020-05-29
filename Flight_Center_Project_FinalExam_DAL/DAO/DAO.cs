@@ -316,7 +316,7 @@ namespace Flight_Center_Project_FinalExam_DAL
         /// <param name="identifier">Object with value and underlying data type of the corresponding property.</param>
         /// <param name="propertyNumber">Enumeration value the corresponds to the number of the property</param>
         /// <returns></returns>
-        public T GetSomethingBySomethingInternal(object identifier, int propertyNumber)
+        public override T GetSomethingBySomethingInternal(object identifier, int propertyNumber)
         {
             ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
             {
@@ -370,38 +370,62 @@ namespace Flight_Center_Project_FinalExam_DAL
             ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
             {
                 string tableName = GetTableName(typeof(T));
-                commandTextForTextMode = $"INSERT INTO {tableName} ({typeof(T).GetProperties()[1].Name}) VALUES ('{typeof(T).GetProperties()[1].GetValue(poco)}') SELECT SCOPE_IDENTITY()";
+
+                PropertyInfo property = null;
+                for (int i = 0; i < typeof(T).GetProperties().Length; i++)
+                {
+                    PropertyInfo prop = typeof(T).GetProperties()[i];
+                    if (prop.Name.ToUpper().Equals("ID"))
+                    {
+                        int propertyPlace = i + 1;
+                        if(i == typeof(T).GetProperties().Length - 1) propertyPlace = i - 1;
+
+                        property = typeof(T).GetProperties()[propertyPlace];
+                        break;
+                    }
+                }
+
+                
+
+                commandTextForTextMode = $"INSERT INTO {tableName} ({property.Name}) VALUES ('{property.GetValue(poco)}') SELECT SCOPE_IDENTITY()";
                 commandtextStoredProcedureName = "DAO_BASE_Add_METHOD_QUERY_for_insert";
 
                 storedProcedureParameters = new Dictionary<string, object>();
                 storedProcedureParameters.Add("TABLE_NAME", tableName);
-                var name = typeof(T).GetProperties()[1].Name;
-                var value = typeof(T).GetProperties()[1].GetValue(poco);
+                var name = property.Name;
+                var value = property.GetValue(poco);
                 storedProcedureParameters.Add("SECOND_COLUMN_NAME", name);
                 storedProcedureParameters.Add("SECOND_COLUMN_VALUE", value);
             };
 
             //IDvalue = RunToAdd(executeCurrentMethosProcedure: execute, commandType: CommandType.Text);
+            //There is a problem in this stored procedute ("DAO_BASE_Add_METHOD_QUERY_for_insert")
             IDvalue = Run(() => { return AddToDb(); } ,executeCurrentMethosProcedure: execute, commandType: CommandType.Text);
             //IDvalue = RunToAdd(executeCurrentMethosProcedure: execute, commandType: CommandType.StoredProcedure);
             //poco.GetType().GetProperties()[0].SetValue(poco, IDvalue);
             poco.GetType().GetProperty("ID").SetValue(poco, IDvalue);
 
             //the second part of the function            
-            for (int i = 2; i < typeof(T).GetProperties().Length; i++)
+            for (int i = 0; i < typeof(T).GetProperties().Length; i++)
             {
+                if (typeof(T).GetProperties()[i].Name.Equals("ID".ToUpper())) continue;
+
                 execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
                 {
                     string tableName = GetTableName(typeof(T));
-                    commandTextForTextMode = $"UPDATE {tableName} SET {typeof(T).GetProperties()[i].Name} = '{typeof(T).GetProperties()[i].GetValue(poco)}' WHERE {typeof(T).GetProperties()[0].Name} = '{typeof(T).GetProperties()[0].GetValue(poco)}'";
+
+                    PropertyInfo property = typeof(T).GetProperties()[i];
+                    PropertyInfo firstColumnProperty = typeof(T).GetProperty("ID");
+
+                    commandTextForTextMode = $"UPDATE {tableName} SET {property.Name} = '{property.GetValue(poco)}' WHERE {firstColumnProperty.Name} = '{firstColumnProperty.GetValue(poco)}'";
                     commandtextStoredProcedureName = "DAO_BASE_Add_METHOD_QUERY_for_update";
 
                     storedProcedureParameters = new Dictionary<string, object>();
                     storedProcedureParameters.Add("TABLE_NAME", tableName);
-                    storedProcedureParameters.Add("SUBSEQUENT_COLUMN_NAME", typeof(T).GetProperties()[i].Name);
-                    storedProcedureParameters.Add("SUBSEQUENT_COLUMN_VALUE", typeof(T).GetProperties()[i].GetValue(poco));
-                    storedProcedureParameters.Add("FIRST_COLUMN_NAME", typeof(T).GetProperties()[0].Name);
-                    storedProcedureParameters.Add("FIRST_COLUMN_VALUE", typeof(T).GetProperties()[0].GetValue(poco));
+                    storedProcedureParameters.Add("SUBSEQUENT_COLUMN_NAME", property.Name);
+                    storedProcedureParameters.Add("SUBSEQUENT_COLUMN_VALUE", property.GetValue(poco));
+                    storedProcedureParameters.Add("FIRST_COLUMN_NAME", firstColumnProperty.Name);
+                    storedProcedureParameters.Add("FIRST_COLUMN_VALUE", firstColumnProperty.GetValue(poco));
                 };
 
                 Run(() => { UpdateInDb(); }, executeCurrentMethosProcedure: execute, commandType: CommandType.Text);
@@ -452,7 +476,7 @@ namespace Flight_Center_Project_FinalExam_DAL
             Run(() => { UpdateInDb(); }, executeCurrentMethosProcedure: execute, CommandType.Text);
         }
 
-        public void DeleteAll()
+        public override void DeleteAll()
         {            
             ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
             {
@@ -506,7 +530,7 @@ namespace Flight_Center_Project_FinalExam_DAL
             finally { _connection.Close(); }
         }
 
-        public virtual void Remove(long ID)
+        public override void Remove(long ID)
         {            
             ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
             {
@@ -561,7 +585,7 @@ namespace Flight_Center_Project_FinalExam_DAL
         /// <param name="identifier"></param>
         /// <param name="propertyNumber"></param>
         /// <returns></returns>
-        public List<T> GetManyBySomethingInternal(object identifier, int propertyNumber)
+        public override List<T> GetManyBySomethingInternal(object identifier, int propertyNumber)
         {
             try
             {

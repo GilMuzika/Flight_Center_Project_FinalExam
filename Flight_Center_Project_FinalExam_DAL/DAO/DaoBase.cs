@@ -47,6 +47,7 @@ namespace Flight_Center_Project_FinalExam_DAL
         /// <summary>
         /// "storedProcedureParameters" is a Dictionary<string, string> that contains parameter for stored procedure.
         /// If it null so the CommandType is "Text"
+        /// This methos is optional. You can overload the Run with appropriate Action delegate instead.
         /// </summary>
         /// <param name="action"></param>
         /// <param name="commandType"></param>
@@ -73,7 +74,8 @@ namespace Flight_Center_Project_FinalExam_DAL
         }
 
         /// <summary>
-        /// "ExecuteScalar" for extract a first column ("ID") value
+        /// "ExecuteScalar" for extract a first column ("ID") value.
+        /// This methos is optional. You can overload the Run with appropriate Action delegate instead.
         /// </summary>
         /// <param name="action"></param>
         /// <param name="commandType"></param>
@@ -100,7 +102,8 @@ namespace Flight_Center_Project_FinalExam_DAL
         }
 
         /// <summary>
-        /// This methos us in se to execute UPDATE and also REMOVE sql statements
+        /// This methos is in use to execute UPDATE and also REMOVE sql statements.
+        /// This methos is optional. You can overload the Run with appropriate Action delegate instead.
         /// </summary>
         /// <param name="action"></param>
         /// <param name="commandType"></param>
@@ -122,7 +125,14 @@ namespace Flight_Center_Project_FinalExam_DAL
             };
             ProcessExceptions(a);
         }
-
+        /// <summary>
+        /// "ExecuteScalar" for extract a first column ("ID") value.
+        /// This methos is optional. In this case, you can use "RunToRead" instead.
+        /// </summary>
+        /// <param name="AddToDb_method">Action delegate that encapsulates the "AddToDb" method</param>
+        /// <param name="executeCurrentMethosProcedure">Delegate that encapsulates the changing part of the pattern</param>
+        /// <param name="commandType">Type of SqlCommand, Text or Storedprocedure either</param>
+        /// <returns></returns>
         protected long Run(Func<long> AddToDb_method, ExecuteCurrentMethosProcedure executeCurrentMethosProcedure, CommandType commandType)
         {
             //If the "ReadFromDb_method" and "UpdateInDb_method" parameters are null the method will execute "AddToDb_method" return "idValueAfterAdding". "payloadValueAfterGetting" will be null.
@@ -130,6 +140,15 @@ namespace Flight_Center_Project_FinalExam_DAL
             return idValueAfterAdding;
         }
 
+        /// <summary>
+        /// "storedProcedureParameters" is a Dictionary<string, string> that contains parameter for stored procedure.
+        /// If it null so the CommandType is "Text".
+        /// This methos is optional. In this case, you can use "RunToRead" instead.
+        /// </summary>
+        /// <param name="AddToDb_method">Action delegate that encapsulates the "ReadFromDb" method</param>
+        /// <param name="executeCurrentMethosProcedure">Delegate that encapsulates the changing part of the pattern</param>
+        /// <param name="commandType">Type of SqlCommand, Text or Storedprocedure either</param>
+        /// <returns></returns>
         protected List<T> Run(Func<List<T>> ReadFromDb_method, ExecuteCurrentMethosProcedure executeCurrentMethosProcedure, CommandType commandType)
         {
             //If "AddToDb_method" and "UpdateInDb_method" are null "ReadFromDb_method" will be executed and "payloadValueAfterGetting" will be returned. "idValueAfterAdding" will be -1.
@@ -137,6 +156,13 @@ namespace Flight_Center_Project_FinalExam_DAL
             return payloadValueAfterGetting;
         }
 
+        /// <summary>
+        /// This methos is in use to execute UPDATE and also REMOVE sql statements.
+        /// This methos is optional. In this case, you can use "RunToRead" instead.
+        /// </summary>
+        /// <param name="AddToDb_method">Action delegate that encapsulates the "UpdateInDb" method</param>
+        /// <param name="executeCurrentMethosProcedure">Delegate that encapsulates the changing part of the pattern</param>
+        /// <param name="commandType">Type of SqlCommand, Text or Storedprocedure either</param>
         protected void Run(Action UpdateInDb_method, ExecuteCurrentMethosProcedure executeCurrentMethosProcedure, CommandType commandType)
         {
             //If "AddToDb_method" and "ReadFromDb_method" are null, "UpdateInDb_method" will be executed. Since "UpdateInDb_method" is Action and don't return any value, so "idValueAfterAdding" and "payloadValueAfterGetting" will be their respective default values, -1 and null. 
@@ -175,7 +201,7 @@ namespace Flight_Center_Project_FinalExam_DAL
 
         #endregion Template methods
 
-
+        #region abstract methods definitions
 
         public abstract long Add(T poco);
 
@@ -186,6 +212,16 @@ namespace Flight_Center_Project_FinalExam_DAL
         public abstract void Remove(T poco);
 
         public abstract void Update(T poco);
+
+        public abstract T GetSomethingBySomethingInternal(object identifier, int propertyNumber);
+
+        public abstract void DeleteAll();
+
+        public abstract void Remove(long ID);
+
+        public abstract List<T> GetManyBySomethingInternal(object identifier, int propertyNumber);
+
+        #endregion abstract methods definitions
 
 
         #region Additional auxiliary methods

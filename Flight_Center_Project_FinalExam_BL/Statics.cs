@@ -43,7 +43,7 @@ namespace Flight_Center_Project_FinalExam_BL
             bool isEqual = true;
             for (int i = 0; i < typeof(T).GetProperties().Length; i++)
             {
-                if (typeof(T).GetProperties()[i].Name.Equals("ID".ToUpper())) continue;
+                if (typeof(T).GetProperties()[i].Name.ToUpper().Equals("ID")) continue;
                 var value1 = typeof(T).GetProperties()[i].GetValue(o1);
                 var value2 = typeof(T).GetProperties()[i].GetValue(o2);
 

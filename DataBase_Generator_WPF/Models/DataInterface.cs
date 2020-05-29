@@ -162,9 +162,7 @@ namespace DataBase_Generator_WPF
             _currentWithUtility_clas_UserDAO = CreateAppropriateDAO_WithUtility_class_User();
             GenerateUtility_class_UserPasswordAndName(out string nameCrypt, out string passsCrypt);
             _currentWithUtility_clas_UserDAO.Add(administrator as T, nameCrypt, passsCrypt);
-
-
-            var r = deserializedRandomUserObject.results[0].picture.thumbnail;
+            
         }
         private void AddFlights(long from, long to, long fixedNumber) //this function don't use the parameters "from" and "to" but they must be there becauase of signature uniformity
         {
