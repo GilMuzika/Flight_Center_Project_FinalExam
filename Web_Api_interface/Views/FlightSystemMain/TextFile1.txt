@@ -1,0 +1,27 @@
+﻿<tr>
+<th>Flight</th>
+<th></th>
+<th>Departing From</th>
+<th>To</th>
+<th></th>
+<th>Est. Time</th>
+<th>T</th>
+<th>Status</th>
+</tr>
+
+
+
+<tr id=_flightTable>
+    <td>###airCompany.ADORNING###</td>
+    <td>
+        <img src=~/ViewsImages/FlightSystemMain/transparentTerminator.gif width=40 />
+    </td>
+    <td>###departureCountry.COUNTRY_NAME###</td>
+    <td>###destinationCountry.COUNTRY_NAME###</td>
+    <td>&nbsp;</td>
+    <td>###estimateTime###</td>
+    <td>###terminalNum###</td>
+    <td>
+        <div style=background-color: @statusBoxColor class=statusBox>###statusMessage###</div>
+    </td>
+</tr>

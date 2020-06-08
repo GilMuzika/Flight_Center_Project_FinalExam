@@ -13,9 +13,9 @@ namespace Flight_Center_Project_FinalExam_DAL
         public T GetUserByIdentifier2(IPoco anotherTypePoco)
         {
             List<T> users = new List<T>();
-            users.Add(base.GetSomethingInOneTableBySomethingInAnotherInternal(anotherTypePoco.GetType().GetProperty("USER_ID").GetValue(anotherTypePoco), (int)CustomerPropertyNumber.USER_ID, typeof(Customer)));
-            users.Add(base.GetSomethingInOneTableBySomethingInAnotherInternal(anotherTypePoco.GetType().GetProperty("USER_ID").GetValue(anotherTypePoco), (int)AirlineCompanyPropertyNumber.USER_ID, typeof(AirlineCompany)));
-            users.Add(base.GetSomethingInOneTableBySomethingInAnotherInternal(anotherTypePoco.GetType().GetProperty("USER_ID").GetValue(anotherTypePoco), (int)AdministratorPropertyNumber.USER_ID, typeof(Administrator)));
+            users.Add(base.GetRegisteredUserInOneTableBySomethingInAnotherInternal(anotherTypePoco.GetType().GetProperty("USER_ID").GetValue(anotherTypePoco), (int)CustomerPropertyNumber.USER_ID, typeof(Customer)));
+            users.Add(base.GetRegisteredUserInOneTableBySomethingInAnotherInternal(anotherTypePoco.GetType().GetProperty("USER_ID").GetValue(anotherTypePoco), (int)AirlineCompanyPropertyNumber.USER_ID, typeof(AirlineCompany)));
+            users.Add(base.GetRegisteredUserInOneTableBySomethingInAnotherInternal(anotherTypePoco.GetType().GetProperty("USER_ID").GetValue(anotherTypePoco), (int)AdministratorPropertyNumber.USER_ID, typeof(Administrator)));
             /*users.Add(base.GetSomethingBySomethingInternal(anotherTypePoco.GetType().GetProperties()[0].GetValue(anotherTypePoco), (int)Utility_class_UserPropertyNumber.AIRLINE_ID));
             users.Add(base.GetSomethingBySomethingInternal(anotherTypePoco.GetType().GetProperties()[0].GetValue(anotherTypePoco), (int)Utility_class_UserPropertyNumber.CUSTOMER_ID));
             users.Add(base.GetSomethingBySomethingInternal(anotherTypePoco.GetType().GetProperties()[0].GetValue(anotherTypePoco), (int)Utility_class_UserPropertyNumber.ADMINISTRATOR_ID));*/
@@ -28,7 +28,7 @@ namespace Flight_Center_Project_FinalExam_DAL
         }
         public T GetUserByIdentifier(IPoco anotherTypePoco)
         {
-            return GetSomethingInOneTableBySomethingInAnotherInternal(anotherTypePoco.GetType().GetProperty("USER_ID").GetValue(anotherTypePoco), anotherTypePoco.GetType().GetProperties().Length - 1, anotherTypePoco.GetType());
+            return GetRegisteredUserInOneTableBySomethingInAnotherInternal(anotherTypePoco.GetType().GetProperty("USER_ID").GetValue(anotherTypePoco), anotherTypePoco.GetType().GetProperties().Length - 1, anotherTypePoco.GetType());
         }
 
     }

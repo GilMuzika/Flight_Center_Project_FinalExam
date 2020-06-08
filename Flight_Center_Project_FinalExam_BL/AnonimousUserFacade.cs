@@ -52,6 +52,7 @@ namespace Flight_Center_Project_FinalExam_BL
             correlation.Add(typeof(Customer).Name, _customerDAO as DAO<T>);
             correlation.Add(typeof(Flight).Name, _flightDAO as DAO<T>);
             correlation.Add(typeof(Ticket).Name, _ticketDAO as DAO<T>);
+            correlation.Add(typeof(WebPageSearchResultsHTMLModel).Name, _webPageSearchResultsHTMLModelDAO as DAO<T>);
 
             return correlation;
         }
@@ -78,6 +79,13 @@ namespace Flight_Center_Project_FinalExam_BL
             Dictionary<string, DAO<T>> correlation = BuildCorrelationDictionary<T>();
 
             return correlation[typeof(T).Name].Get(Id);
+        }
+
+        public T GetSomethingInOneTableBySomethingInAnother<T>(object byWhatInOneTable, string byWhatInOneTable_columnName, string byWahatInAnotherTable_columnName, int anotherPocoTypePropertyNumber, Type anotherPocoType) where T : class, IPoco, new()
+        {
+            Dictionary<string, DAO<T>> correlation = BuildCorrelationDictionary<T>();
+
+            return correlation[typeof(T).Name].GetSomethingInOneTableBySomethingInAnother(byWhatInOneTable, byWhatInOneTable_columnName, byWahatInAnotherTable_columnName, anotherPocoTypePropertyNumber, anotherPocoType);
         }
 
         public Dictionary<Flight, int> GetAllFlightsVacancy()

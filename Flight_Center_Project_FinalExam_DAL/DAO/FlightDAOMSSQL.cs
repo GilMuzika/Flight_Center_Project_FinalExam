@@ -110,6 +110,47 @@ namespace Flight_Center_Project_FinalExam_DAL
         /// <returns></returns>
         public List<T> GetAllFlightsThatTakeOffInSomeTimeFromNow(TimeSpan sometime, RazorViewStatus viewStatus, RazorViewStatus viewTime)
         {
+            var dt = DateTime.Now;
+            DateTime selectionDateTime = DateTime.Now.Add(sometime);
+
+            //imminentFlightActionTime -> depatrure time or landing time of the flight in question, depending on "viewStatus" parameter of the method
+            string imminentFlightActionTime = "DEPARTURE_TIME";
+            char comparsionSymbol = '<';
+            char comparsionSymbol2 = '>';
+
+
+            if (viewStatus == RazorViewStatus.Landings)
+            {
+                imminentFlightActionTime = "LANDING_TIME";
+                if (viewTime == RazorViewStatus.Past)
+                {
+                    comparsionSymbol = '<';
+                    comparsionSymbol2 = '>';
+                    selectionDateTime = DateTime.Now.Subtract(sometime);
+
+                }
+            }
+
+            ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
+            {
+                commandTextForTextMode = $"select * from {GetTableName(typeof(T))} WHERE {imminentFlightActionTime} {comparsionSymbol}= '{selectionDateTime}' AND {imminentFlightActionTime} {comparsionSymbol2}= '{DateTime.Now}'";
+                commandtextStoredProcedureName = string.Empty;
+                storedProcedureParameters = null;
+            };
+
+            return Run(() => { return ReadFromDb(); }, executeCurrentMethosProcedure: execute, commandType: CommandType.Text);
+        }
+
+        /*
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sometime">Time that defines time range of the flights the method returns</param>
+        /// <param name="viewStatus">Defines if flights are for Departures or Arrivals</param>
+        /// <param name="viewTime">Defines if Departures or Arrival was or will be</param>
+        /// <returns></returns>
+        public List<T> GetAllFlightsThatTakeOffInSomeTimeFromNow_old(TimeSpan sometime, RazorViewStatus viewStatus, RazorViewStatus viewTime)
+        {
             try
             {
                 List<T> toReturn = new List<T>();
@@ -166,7 +207,7 @@ namespace Flight_Center_Project_FinalExam_DAL
             finally { _connection.Close(); }
 
 
-        }
+        }*/
 
         public Flight getFlightByDestinationCountry(Country destinationCountry)
         {

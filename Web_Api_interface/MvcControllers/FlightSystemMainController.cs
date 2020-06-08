@@ -33,6 +33,14 @@ namespace Web_Api_interface.MvcControllers
             return View("FlightSystemMainView");
         }
 
+        public ActionResult SearchPage(string str)
+        {
+            ViewBag.Title = "Search";
+            ViewBag.PageKind = "Search";
+            ViewBag.PageKindIconSrc = "search_small.gif";
+            return View();
+        }
+
         public ActionResult WebClientSideJobDoer_test()
         {
             return View();

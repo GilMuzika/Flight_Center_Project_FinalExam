@@ -185,42 +185,6 @@ namespace Flight_Center_Project_FinalExam_DAL
             instanceTypeCorrelation[daoType]();
         }
 
-        protected T GetSomethingInOneTableBySomethingInAnotherInternal(object byWhatInOneTable, int anotherPocoTypePropertyNumber, Type anotherPocoType)
-        {
-            ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
-            {
-                string tableName = this.GetTableName(typeof(T));
-                string anothertablename = this.GetTableName(anotherPocoType);
-                string relevantColumnName = typeof(T).GetProperties()[anotherPocoTypePropertyNumber].Name;
-                string relevantColumnNameInAnotherTable = anotherPocoType.GetProperties()[anotherPocoTypePropertyNumber].Name;
-                string identifyer_ByWhatInQMarks = string.Empty;
-                if (byWhatInOneTable.GetType().Name == "String") identifyer_ByWhatInQMarks = $"'{byWhatInOneTable}'";
-                else identifyer_ByWhatInQMarks = byWhatInOneTable.ToString();
-
-                string leftSideOfONStatement = "USER_ID";
-                string rightSideOfONStatement = "ID";
-                if (typeof(T).Name == "Utility_class_User")
-                {
-                    leftSideOfONStatement = "ID";
-                    rightSideOfONStatement = "USER_ID";
-                }
-
-                commandTextForTextMode = $"SELECT {tableName}.* FROM {tableName} JOIN {anothertablename} ON {tableName}.{leftSideOfONStatement} = {anothertablename}.{rightSideOfONStatement} WHERE {anothertablename}.{relevantColumnNameInAnotherTable} = {identifyer_ByWhatInQMarks}";
-                commandtextStoredProcedureName = "DAO_BASE_GetSomethingInOneTableBySomethingInAnotherInternal_METHOD_QUERY";
-
-                storedProcedureParameters = new Dictionary<string, object>();
-                storedProcedureParameters.Add("TABLE_NAME", tableName);
-                storedProcedureParameters.Add("ANOTHER_TABLE_NAME", anothertablename);
-                storedProcedureParameters.Add("LEFT_SIDE_OF_ONSTATEMENT", leftSideOfONStatement);
-                storedProcedureParameters.Add("RIGHT_SIDE_OF_ONSTATEMENT", rightSideOfONStatement);
-                storedProcedureParameters.Add("RELEVANT_COLUMN_NAME_IN_ANOTHER_TABLE", relevantColumnNameInAnotherTable);
-                storedProcedureParameters.Add("COLUMN_IDENTIFIER", identifyer_ByWhatInQMarks);
-            };
-            
-            //return RunToRead(executeCurrentMethosProcedure: execute, CommandType.StoredProcedure).FirstOrDefault(); 
-            return Run(ReadFromDb_method: () => { return ReadFromDb(); }, executeCurrentMethosProcedure: execute, commandType: CommandType.StoredProcedure).FirstOrDefault(); 
-        }
-
         #endregion private and protected methods for DAL internal usage
 
         #region template_methods
@@ -305,7 +269,91 @@ namespace Flight_Center_Project_FinalExam_DAL
 
         #region Public service methods
 
+        /// <summary>
+        /// This method lets get a "poco" object of one type (say "A" type) by some property value of a poco object of another type (say "B" type). 
+        ///For instance, with this method, you can get an "AirlineCompany" object by the value of the property "AIRLINECOMPANY_ID" of a "Flight poco object", without creating an actual "Flight"  object.
+        ///("AIRLINECOMPANY_ID" of a "Flight" type is an "ID" of an "AirlineCompany" type).
+        ///The method needs parameters as such:
+        ///"byWhatInOneTable": the value of a property of "B" type by which an appropriate "poco" object of "A" type will be found.May be of any type.
+        ///"byWhatInOneTable_columnName": The name of the property of the "A" type by which value an appropriate "poco" object of "A" type will be found.
+        ///"byWahatInAnotherTable_columnName": The name of the property of the "B" type by which value an appropriate "poco" object of "A" type will be found.
+        ///These two parameters represent the same value in the two objects.
+        ///
+        ///"anotherPocoTypePropertyNumber": The serial number (in the sequence from 0 to "n", where "n" is the actual amount of properties in the type minus 1) in the "B" type.
+        ///"anotherPocoType": The actual "B" type.
+        /// </summary>
+        /// <param name="byWhatInOneTable"></param>
+        /// <param name="byWhatInOneTable_columnName"></param>
+        /// <param name="byWahatInAnotherTable_columnName"></param>
+        /// <param name="anotherPocoTypePropertyNumber"></param>
+        /// <param name="anotherPocoType"></param>
+        /// <returns>The generic type of the class in which the method is placed.</returns>
+        public T GetSomethingInOneTableBySomethingInAnother(object byWhatInOneTable, string byWhatInOneTable_columnName, string byWahatInAnotherTable_columnName, int anotherPocoTypePropertyNumber, Type anotherPocoType)
+        {
+            ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
+            {
+                string tableName = this.GetTableName(typeof(T));
+                string anothertablename = this.GetTableName(anotherPocoType);                
+                string relevantColumnNameInAnotherTable = anotherPocoType.GetProperties()[anotherPocoTypePropertyNumber].Name;
+                string identifyer_ByWhatInQMarks = string.Empty;
+                if (byWhatInOneTable.GetType().Name == "String") identifyer_ByWhatInQMarks = $"'{byWhatInOneTable}'";
+                else identifyer_ByWhatInQMarks = byWhatInOneTable.ToString();
 
+                string leftSideOfONStatement = byWhatInOneTable_columnName;
+                string rightSideOfONStatement = byWahatInAnotherTable_columnName;
+
+                commandTextForTextMode = $"SELECT {tableName}.* FROM {tableName} JOIN {anothertablename} ON {tableName}.{leftSideOfONStatement} = {anothertablename}.{rightSideOfONStatement} WHERE {anothertablename}.{relevantColumnNameInAnotherTable} = {identifyer_ByWhatInQMarks}";
+                commandtextStoredProcedureName = "DAO_BASE_GetSomethingInOneTableBySomethingInAnotherInternal_METHOD_QUERY";
+
+                storedProcedureParameters = new Dictionary<string, object>();
+                storedProcedureParameters.Add("TABLE_NAME", tableName);
+                storedProcedureParameters.Add("ANOTHER_TABLE_NAME", anothertablename);
+                storedProcedureParameters.Add("LEFT_SIDE_OF_ONSTATEMENT", leftSideOfONStatement);
+                storedProcedureParameters.Add("RIGHT_SIDE_OF_ONSTATEMENT", rightSideOfONStatement);
+                storedProcedureParameters.Add("RELEVANT_COLUMN_NAME_IN_ANOTHER_TABLE", relevantColumnNameInAnotherTable);
+                storedProcedureParameters.Add("COLUMN_IDENTIFIER", identifyer_ByWhatInQMarks);
+            };
+
+            //return RunToRead(executeCurrentMethosProcedure: execute, CommandType.StoredProcedure).FirstOrDefault(); 
+            return Run(ReadFromDb_method: () => { return ReadFromDb(); }, executeCurrentMethosProcedure: execute, commandType: CommandType.StoredProcedure).FirstOrDefault();
+        }
+
+        protected T GetRegisteredUserInOneTableBySomethingInAnotherInternal(object byWhatInOneTable, int anotherPocoTypePropertyNumber, Type anotherPocoType)
+        {
+            ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
+            {
+                string tableName = this.GetTableName(typeof(T));
+                string anothertablename = this.GetTableName(anotherPocoType);
+                string relevantColumnName = typeof(T).GetProperties()[anotherPocoTypePropertyNumber].Name;
+                string relevantColumnNameInAnotherTable = anotherPocoType.GetProperties()[anotherPocoTypePropertyNumber].Name;
+                string identifyer_ByWhatInQMarks = string.Empty;
+                if (byWhatInOneTable.GetType().Name == "String") identifyer_ByWhatInQMarks = $"'{byWhatInOneTable}'";
+                else identifyer_ByWhatInQMarks = byWhatInOneTable.ToString();
+
+                string leftSideOfONStatement = "USER_ID";
+                string rightSideOfONStatement = "ID";
+                if (typeof(T).Name == "Utility_class_User")
+                {
+                    leftSideOfONStatement = "ID";
+                    rightSideOfONStatement = "USER_ID";
+                }
+
+                commandTextForTextMode = $"SELECT {tableName}.* FROM {tableName} JOIN {anothertablename} ON {tableName}.{leftSideOfONStatement} = {anothertablename}.{rightSideOfONStatement} WHERE {anothertablename}.{relevantColumnNameInAnotherTable} = {identifyer_ByWhatInQMarks}";
+                commandtextStoredProcedureName = "DAO_BASE_GetSomethingInOneTableBySomethingInAnotherInternal_METHOD_QUERY";
+                //commandtextStoredProcedureName = "DAO_BASE_GetRegisteredUserInOneTableBySomethingInAnotherInternal_METHOD_QUERY";
+
+                storedProcedureParameters = new Dictionary<string, object>();
+                storedProcedureParameters.Add("TABLE_NAME", tableName);
+                storedProcedureParameters.Add("ANOTHER_TABLE_NAME", anothertablename);
+                storedProcedureParameters.Add("LEFT_SIDE_OF_ONSTATEMENT", leftSideOfONStatement);
+                storedProcedureParameters.Add("RIGHT_SIDE_OF_ONSTATEMENT", rightSideOfONStatement);
+                storedProcedureParameters.Add("RELEVANT_COLUMN_NAME_IN_ANOTHER_TABLE", relevantColumnNameInAnotherTable);
+                storedProcedureParameters.Add("COLUMN_IDENTIFIER", identifyer_ByWhatInQMarks);
+            };
+
+            //return RunToRead(executeCurrentMethosProcedure: execute, CommandType.StoredProcedure).FirstOrDefault(); 
+            return Run(ReadFromDb_method: () => { return ReadFromDb(); }, executeCurrentMethosProcedure: execute, commandType: CommandType.StoredProcedure).FirstOrDefault();
+        }
 
 
         /// <summary>
@@ -400,7 +448,7 @@ namespace Flight_Center_Project_FinalExam_DAL
 
             //IDvalue = RunToAdd(executeCurrentMethosProcedure: execute, commandType: CommandType.Text);
             //There is a problem in this stored procedute ("DAO_BASE_Add_METHOD_QUERY_for_insert")
-            IDvalue = Run(() => { return AddToDb(); } ,executeCurrentMethosProcedure: execute, commandType: CommandType.Text);
+            IDvalue = Run(() => { return AddToDb(); } ,executeCurrentMethosProcedure: execute, commandType: CommandType.StoredProcedure);
             //IDvalue = RunToAdd(executeCurrentMethosProcedure: execute, commandType: CommandType.StoredProcedure);
             //poco.GetType().GetProperties()[0].SetValue(poco, IDvalue);
             poco.GetType().GetProperty("ID").SetValue(poco, IDvalue);
@@ -549,6 +597,40 @@ namespace Flight_Center_Project_FinalExam_DAL
 
         public override void Update(T poco)
         {
+            var propInfos = typeof(T).GetProperties();
+            string firstColumnName = typeof(T).GetProperty("ID").Name.ToUpper();
+            object firstColumnValue = typeof(T).GetProperty("ID").GetValue(poco);
+
+
+            for (int i = 0; i < typeof(T).GetProperties().Length; i++)
+            {
+                if (typeof(T).GetProperties()[i].Name.Equals("ID".ToUpper())) continue;
+
+                ExecuteCurrentMethosProcedure execute = (out string commandtextStoredProcedureName, out string commandTextForTextMode, out Dictionary<string, object> storedProcedureParameters) =>
+                {
+                    string tableName = this.GetTableName(typeof(T));
+
+                    var value = typeof(T).GetProperties()[i].GetValue(poco);
+
+                    if (propInfos[i].GetValue(poco) is String || propInfos[i].GetValue(poco) is DateTime)
+                    {
+                        if (value == null) value = String.Empty;
+                        else value = $"'{value}'";
+                    }
+                    if (propInfos[i].GetValue(poco).GetType().Name.ToLower().Contains("int") && value == null) value = 0;
+                    if (propInfos[i].GetValue(poco).GetType().Name == "DateTime" && value == null) value = DateTime.MinValue;
+
+                    commandTextForTextMode = $"UPDATE {tableName} SET {propInfos[i].Name} = {value} WHERE {firstColumnName} = {firstColumnValue}";
+                    commandtextStoredProcedureName = string.Empty;
+                    storedProcedureParameters = null;
+                };
+
+                Run(() => { UpdateInDb(); }, execute, CommandType.Text);
+            }
+        }
+
+        /*public void Update_old(T poco)
+        {
             try
             {
                 _connection.Open();
@@ -576,7 +658,7 @@ namespace Flight_Center_Project_FinalExam_DAL
             }
             finally { _connection.Close(); }
 
-        }
+        }*/
 
 
         /// <summary>

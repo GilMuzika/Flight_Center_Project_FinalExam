@@ -132,13 +132,16 @@
 </tr>
 @foreach (var flight in flights)
 {
-    Flight_Center_Project_FinalExam_DAL.Country departureCountry = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.Country>(flight.ORIGIN_COUNTRY_CODE);
-    Flight_Center_Project_FinalExam_DAL.AirlineCompany airCompany = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.AirlineCompany>(flight.AIRLINECOMPANY_ID);
-    Flight_Center_Project_FinalExam_DAL.Country destinationCountry = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.Country>(flight.DESTINATION_COUNTRY_CODE);
+    //Flight_Center_Project_FinalExam_DAL.Country departureCountry = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.Country>(flight.ORIGIN_COUNTRY_CODE);
+    Flight_Center_Project_FinalExam_DAL.Country departureCountry = _anonimousUserFacade.GetSomethingInOneTableBySomethingInAnother<Flight_Center_Project_FinalExam_DAL.Country>(flight.ORIGIN_COUNTRY_CODE, "ID", "ORIGIN_COUNTRY_CODE", 2, typeof(Flight_Center_Project_FinalExam_DAL.Flight));
+    //Flight_Center_Project_FinalExam_DAL.AirlineCompany airCompany = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.AirlineCompany>(flight.AIRLINECOMPANY_ID);
+    Flight_Center_Project_FinalExam_DAL.AirlineCompany airCompany = _anonimousUserFacade.GetSomethingInOneTableBySomethingInAnother<Flight_Center_Project_FinalExam_DAL.AirlineCompany>(flight.AIRLINECOMPANY_ID, "ID", "AIRLINECOMPANY_ID", 1, typeof(Flight_Center_Project_FinalExam_DAL.Flight));
+    //Flight_Center_Project_FinalExam_DAL.Country destinationCountry = _anonimousUserFacade.Get<Flight_Center_Project_FinalExam_DAL.Country>(flight.DESTINATION_COUNTRY_CODE);
+    Flight_Center_Project_FinalExam_DAL.Country destinationCountry = _anonimousUserFacade.GetSomethingInOneTableBySomethingInAnother<Flight_Center_Project_FinalExam_DAL.Country>(flight.DESTINATION_COUNTRY_CODE, "ID", "DESTINATION_COUNTRY_CODE", 3, typeof(Flight_Center_Project_FinalExam_DAL.Flight));
 
     string imageBase64 = "~/ViewsImages/FlightSystemMain/transparentTerminator.gif";
     if (airCompany.IMAGE != null && airCompany.IMAGE.Length > 50)
-    {             
+    {
         imageBase64 = Web_Api_interface.Views.FlightSystemMain.ImageRestorer.GetFormattedImage64baseString(airCompany.IMAGE);
     }
 
@@ -152,7 +155,9 @@
     <td>@destinationCountry.COUNTRY_NAME</td>
     <td>&nbsp;</td>
     @{ 
-        TimeSpan estimateTime = flight.LANDING_TIME.Subtract(flight.DEPARTURE_TIME);
+        //Estimated arrival time 
+        //TimeSpan estimateTime = flight.LANDING_TIME.Subtract(flight.DEPARTURE_TIME);
+        DateTime estimateTime = flight.DEPARTURE_TIME;
 
         string statusMessage = "---------";
         string statusBoxColor = "#77ca50;";

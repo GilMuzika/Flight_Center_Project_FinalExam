@@ -193,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiControllers\JwtController.cs" />
+    <Compile Include="ApiControllers\SearchController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -297,9 +298,13 @@
     <Content Include="ViewsImages\FlightSystemMain\bottomLeftCorner.gif" />
     <Content Include="ViewsImages\FlightSystemMain\bottomRightCorner.gif" />
     <Content Include="ViewsImages\FlightSystemMain\departures.gif" />
+    <Content Include="ViewsImages\FlightSystemMain\dropdown_button_small.gif" />
+    <Content Include="ViewsImages\FlightSystemMain\search_small.gif" />
     <Content Include="ViewsImages\FlightSystemMain\transparentTerminator.gif" />
     <Content Include="ViewsImages\FlightSystemMain\upperLeftCorner.gif" />
     <Content Include="ViewsImages\FlightSystemMain\upperRightCorner.gif" />
+    <Content Include="Views\FlightSystemMain\SearchResultsHTMLmodel.txt" />
+    <Content Include="Views\FlightSystemMain\TextFile1.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -316,6 +321,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\FlightSystemMain\FlightSystemMainView.cshtml" />
     <Content Include="Views\FlightSystemMain\WebClientSideJobDoer_test.cshtml" />
+    <Content Include="Views\FlightSystemMain\SearchPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

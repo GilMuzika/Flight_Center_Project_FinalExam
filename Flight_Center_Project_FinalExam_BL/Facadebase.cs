@@ -16,6 +16,7 @@ namespace Flight_Center_Project_FinalExam_BL
         protected TicketHistoryDAOMSSQL<TicketsHistory> _ticketHistoryDAO = new TicketHistoryDAOMSSQL<TicketsHistory>();
         protected HistoryTrackingDAOMSSQL<HistoryTracking> _historyTrackingDAO = new HistoryTrackingDAOMSSQL<HistoryTracking>();
         protected FailedLoginAttemptsDAOMSSQL<FailedLoginAttempt> _failedLoginAttemptsDAO = new FailedLoginAttemptsDAOMSSQL<FailedLoginAttempt>();
+        protected WebPageSearchResultsHTMLModelDAOMSSQL<WebPageSearchResultsHTMLModel> _webPageSearchResultsHTMLModelDAO = new WebPageSearchResultsHTMLModelDAOMSSQL<WebPageSearchResultsHTMLModel>();
 
         protected Utility_class_UserDAOMSSQL<Utility_class_User> _utility_Class_UserDAO = new Utility_class_UserDAOMSSQL<Utility_class_User>();
       

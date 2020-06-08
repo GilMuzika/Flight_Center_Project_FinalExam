@@ -16,7 +16,7 @@ namespace Flight_Center_Project_FinalExam_DAL
         public Customer GetCustomerByUsername(string customerUsername)
         {
             //return GetSomethingBySomethingInternal(customerUsername, (int)CustomerPropertyNumber.USER_NAME);
-            return GetSomethingInOneTableBySomethingInAnotherInternal(customerUsername, (int)Utility_class_UserPropertyNumber.USER_NAME, typeof(Utility_class_User));
+            return GetRegisteredUserInOneTableBySomethingInAnotherInternal(customerUsername, (int)Utility_class_UserPropertyNumber.USER_NAME, typeof(Utility_class_User));
         }
         public Customer GetCustomerByUserID(long userID)
         {

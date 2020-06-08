@@ -74,6 +74,7 @@
     <None Include="DAO\attributes\DBTableNameAttribute.cs_back" />
     <Compile Include="DAO\DAO.cs" />
     <Compile Include="DAO\DaoBase.cs" />
+    <Compile Include="DAO\WebPageSearchResultsHTMLModelDAOMSSQL.cs" />
     <Compile Include="DAO\FailedLoginAttemptsDAOMSSQL.cs" />
     <Compile Include="DAO\FlightDAOMSSQL.cs" />
     <Compile Include="DAO\FlightHistoryDAOMSSQL.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="DAO\Utility_class_UserDAOMSSQL.cs" />
     <None Include="DAO\DAO_old.cs_back" />
     <Compile Include="EncryptionProvider.cs" />
+    <Compile Include="IDAL\IWebPageSearchResultsHTMLModelDAOMSSQL.cs" />
     <Compile Include="IDAL\IFailedLoginAttemptsDAOMSSQL.cs" />
     <Compile Include="IDAL\IHistoryTrackingDAO.cs" />
     <Compile Include="IDAL\ISystemUserBase.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Pocos\Ticket.cs" />
     <Compile Include="Pocos\TicketsHistory.cs" />
     <Compile Include="Pocos\Utility_class_User.cs" />
+    <Compile Include="Pocos\WebPageSearchResultsHTMLModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecentlyDeletedRecordStillExistsException.cs" />
     <Compile Include="RecentlyUpdatedRecordDidntChangedException.cs" />
